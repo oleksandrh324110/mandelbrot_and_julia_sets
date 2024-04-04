@@ -21,13 +21,12 @@ endif
 
 SRC = $(shell find src -name "*.c")
 OBJ = $(SRC:.c=.o)
-DEP = $(SRC:.cpp=.d)
+DEP = $(SRC:.c=.d)
 
 all: compile link run
 
 libs:
 	cd libs/glfw && cmake . && make
-	cd libs/cglm && cmake . -DCGLM_STATIC=ON && make
 	cd libs/glad && $(CC) -c src/gl.c -o src/gl.o -Iinclude
 
 compile: $(OBJ)

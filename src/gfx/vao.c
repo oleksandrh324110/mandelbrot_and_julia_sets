@@ -7,7 +7,7 @@ vao vao_create() {
 }
 
 void vao_desroy(vao self) {
-  glDeleteVertexArrays(1, self.handle);
+  glDeleteVertexArrays(1, &self.handle);
 }
 
 void vao_bind(vao self) {

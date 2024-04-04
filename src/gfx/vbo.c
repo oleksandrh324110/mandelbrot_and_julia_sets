@@ -10,7 +10,7 @@ vbo vbo_create(GLint target, bool dynamic) {
 }
 
 void vbo_destroy(vbo self) {
-  glDeleteBuffers(1, self.handle);
+  glDeleteBuffers(1, &self.handle);
 }
 
 void vbo_bind(vbo self) {
