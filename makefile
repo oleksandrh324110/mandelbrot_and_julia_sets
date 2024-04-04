@@ -5,9 +5,9 @@ ifndef target
 $(error target is NOT defined)
 endif
 
-CFLAGS = -std=c11 -O0 -Wall -Wextra -Wpedantic -Wno-unused-parameter -MMD -MP
-CFLAGS += -Ilibs/glad/include -Ilibs/glfw/include
-LDFLAGS = libs/glad/src/gl.o libs/glfw/src/libglfw3.a -lm
+CFLAGS = -std=c11 -O0 -Wall -Wextra -Wpedantic -MMD -MP
+CFLAGS += -Ilibs/glad/include -Ilibs/glfw/include -Ilibs/cglm/include
+LDFLAGS = libs/glad/src/gl.o libs/glfw/src/libglfw3.a -Ilibs/cglm/libcglm.a -lm
 
 ifeq ($(target), linux)
 	CC = gcc
@@ -27,6 +27,7 @@ all: compile link run
 
 libs:
 	cd libs/glfw && cmake . && make
+	cd libs/cglm && cmake . -DCGLM_STATIC=ON && make
 	cd libs/glad && $(CC) -c src/gl.c -o src/gl.o -Iinclude
 
 compile: $(OBJ)

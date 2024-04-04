@@ -1,7 +1,7 @@
 #include "vbo.h"
 
-vbo vbo_create(GLint target, bool dynamic) {
-  vbo self = {
+VBO vbo_create(GLint target, bool dynamic) {
+  VBO self = {
     .target = target,
     .dynamic = dynamic
   };
@@ -9,15 +9,15 @@ vbo vbo_create(GLint target, bool dynamic) {
   return self;
 }
 
-void vbo_destroy(vbo self) {
+void vbo_destroy(VBO self) {
   glDeleteBuffers(1, &self.handle);
 }
 
-void vbo_bind(vbo self) {
+void vbo_bind(VBO self) {
   glBindBuffer(self.target, self.handle);
 }
 
-void vbo_buffer(vbo self, void* data, size_t offset, size_t size) {
+void vbo_buffer(VBO self, void* data, size_t offset, size_t size) {
   vbo_bind(self);
   glBufferData(self.target, size - offset, data, self.dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 }

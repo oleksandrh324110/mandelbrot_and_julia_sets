@@ -1,20 +1,20 @@
 #include "vao.h"
 
-vao vao_create() {
-  vao self;
+VAO vao_create() {
+  VAO self;
   glGenVertexArrays(1, &self.handle);
   return self;
 }
 
-void vao_desroy(vao self) {
+void vao_destroy(VAO self) {
   glDeleteVertexArrays(1, &self.handle);
 }
 
-void vao_bind(vao self) {
+void vao_bind(VAO self) {
   glBindVertexArray(self.handle);
 }
 
-void vao_attrib(vao self, vbo vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset) {
+void vao_attrib(VAO self, VBO vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset) {
   vao_bind(self);
   vbo_bind(vbo);
 

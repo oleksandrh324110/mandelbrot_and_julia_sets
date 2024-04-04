@@ -6,9 +6,9 @@
 
 typedef struct {
   GLuint handle;
-} vao;
+} VAO;
 
-vao vao_create();
-void vao_destroy(vao self);
-void vao_bind(vao self);
-void vao_attrib(vao self, vbo vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset);
+VAO vao_create();
+void vao_destroy(VAO self);
+void vao_bind(VAO self);
+void vao_attrib(VAO self, VBO vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset);
