@@ -1,11 +1,12 @@
+.PHONY: default-target all libs clean
+
 default-target: all
-.PHONY: default-target
 
 ifndef target
 $(error target is NOT defined)
 endif
 
-CFLAGS = -std=c11 -O0 -Wall -Wextra -Wpedantic -MMD -MP
+CFLAGS = -std=c11 -O0 -Wall -Wextra -Wpedantic -Wno-newline-eof -MMD -MP
 CFLAGS += -Ilibs/glad/include -Ilibs/glfw/include -Ilibs/cglm/include
 LDFLAGS = libs/glad/src/gl.o libs/glfw/src/libglfw3.a -Ilibs/cglm/libcglm.a -lm
 
@@ -43,6 +44,5 @@ run:
 
 clean:
 	rm $(OBJ) $(DEP)
-.PHONY: clean
 
 -include $(DEP)
