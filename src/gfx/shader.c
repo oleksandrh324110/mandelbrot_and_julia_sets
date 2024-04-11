@@ -3,8 +3,7 @@
 static void _log_and_fail(
   GLint handle, const char* adverb, const char* path,
   void (*getlog)(GLuint, GLsizei, GLsizei*, GLchar*),
-  void (*getiv)(GLuint, GLenum, GLint*))
-{
+  void (*getiv)(GLuint, GLenum, GLint*)) {
   GLint loglen;
   getiv(handle, GL_INFO_LOG_LENGTH, &loglen);
 
@@ -107,6 +106,7 @@ void shader_uniform_vec4(Shader self, char* name, vec4s v) {
 void shader_uniform_int(Shader self, char* name, int v) {
   glUniform1i(glGetUniformLocation(self.handle, name), v);
 }
+
 void shader_uniform_uint(Shader self, char* name, unsigned int v) {
   glUniform1ui(glGetUniformLocation(self.handle, name), v);
 }

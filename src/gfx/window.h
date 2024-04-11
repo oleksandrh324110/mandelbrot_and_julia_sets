@@ -4,16 +4,16 @@
 #include "../util/util.h"
 
 typedef struct {
-  bool down, last, last_tick, pressed, pressed_tick;
+  bool down, last, pressed;
 } Button;
 
 typedef struct {
   Button buttons[GLFW_MOUSE_BUTTON_LAST];
-  vec2s position, delta;
+  ivec2s position, delta;
 } Mouse;
 
 typedef struct {
-  Button keys[GLFW_KEY_LAST];
+  Button buttons[GLFW_KEY_LAST];
 } Keyboard;
 
 typedef void (*FWindow)();
@@ -27,12 +27,10 @@ typedef struct {
 
   size_t last_second;
   size_t frames, fps, last_frame, frame_delta;
-  size_t ticks, tps, tick_remainde;
+  size_t ticks, tps, tick_remainder;
 } Window;
 
 extern Window window;
 
-void window_create(FWindow init, FWindow destroy, FWindow tick, FWindow update, FWindow render);
 void window_loop();
-void mouse_set_grabbed(bool grabbed);
-bool mouse_get_grabbed();
+void window_create(int width, int height, const char* title, FWindow init, FWindow destroy, FWindow tick, FWindow update, FWindow render);

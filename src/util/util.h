@@ -10,5 +10,4 @@
 #include <string.h>
 #include <assert.h>
 
-#include <cglm/cglm.h>
 #include <cglm/struct.h>
