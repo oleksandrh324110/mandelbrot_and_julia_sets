@@ -1,29 +1,28 @@
 #include <stdio.h>
 
 #include "gfx/window.h"
+#include "state.h"
 
-void init() {
+State state;
+
+void init(void) {
+  state.window = &window;
+}
+
+void destroy(void) {
 
 }
 
-void destroy() {
+void update(void) {
 
 }
 
-void tick() {
-
-}
-
-void update() {
-
-}
-
-void render() {
-
+void render(void) {
+  glClear(GL_COLOR_BUFFER_BIT);
+  glClearColor(window.mouse.position.x / window.size.x, window.mouse.position.x / window.size.x, window.mouse.position.x / window.size.x, 1);
 }
 
 int main(void) {
-  window_create(800, 600, "Hello, World!", init, destroy, tick, update, render);
+  window_create(720, 480, "Hello, World!", init, destroy, update, render);
   window_loop();
-  return 0;
 }

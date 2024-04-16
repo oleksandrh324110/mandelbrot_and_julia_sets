@@ -6,13 +6,18 @@
 Window window;
 
 static void _size_callback(GLFWwindow* handle, int width, int height) {
-	window.size = (ivec2s){ width, height };
+	window.size = (ivec2s){{ width, height }};
 	glViewport(0, 0, width, height);
 }
 
 static void _cursor_callback(GLFWwindow* handle, double x, double y) {
-	window.mouse.delta = glms_ivec2_sub(window.mouse.position, (ivec2s) { x, y });
-	window.mouse.position = (ivec2s){ x, y };
+	window.mouse.delta = glms_vec2_sub(window.mouse.position, (vec2s) { { x, y } });
+	window.mouse.delta.x *= -1;
+	window.mouse.position = (vec2s){{ x, y }};
+
+	static char title[10];
+	snprintf(title, 10, "%.0f, %.0f", x, y);
+	glfwSetWindowTitle(window.handle, title);
 }
 
 static void _key_callback(GLFWwindow* handle, int key, int scancode, int action, int mods) {
@@ -33,10 +38,9 @@ static void _error_callback(int error, const char* description) {
 	fprintf(stderr, "GLFW error %d:%s\n", error, description);
 }
 
-void window_create(int width, int height, const char* title, FWindow init, FWindow destroy, FWindow tick, FWindow update, FWindow render) {
+void window_create(int width, int height, const char* title, FWindow init, FWindow destroy, FWindow update, FWindow render) {
 	window.init = init;
 	window.destroy = destroy;
-	window.tick = tick;
 	window.update = update;
 	window.render = render;
 
@@ -56,7 +60,7 @@ void window_create(int width, int height, const char* title, FWindow init, FWind
 
 	glfwSetErrorCallback(_error_callback);
 
-	window.size = (ivec2s){ width, height };
+	window.size = (ivec2s){{ width, height }};
 
 	window.handle = glfwCreateWindow(width, height, title, NULL, NULL);
 	if (!window.handle) {
@@ -81,24 +85,30 @@ void window_create(int width, int height, const char* title, FWindow init, FWind
 	glfwSwapInterval(1);
 }
 
-void window_loop() {
+void window_loop(void) {
 	window.init();
 
 	while (!glfwWindowShouldClose(window.handle)) {
 		double now = glfwGetTime();
 
-		printf("%lf\n", now);
-
 		window.frame_delta = now - window.last_frame;
 		window.last_frame = now;
 
+		if (now - window.last_second >= 1.0) {
+			window.fps = window.frames;
+			window.frames = 0;
+			window.last_second = now;
+		}
+
+		window.frames++;
+		window.update();
+		window.render();
+
 		glfwSwapBuffers(window.handle);
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 		glfwPollEvents();
 	}
 
 	window.destroy();
+	glfwTerminate();
 	exit(0);
 }
