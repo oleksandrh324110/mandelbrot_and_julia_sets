@@ -14,10 +14,6 @@ static void _cursor_callback(GLFWwindow* handle, double x, double y) {
 	window.mouse.delta = glms_vec2_sub(window.mouse.position, (vec2s) { { x, y } });
 	window.mouse.delta.x *= -1;
 	window.mouse.position = (vec2s){{ x, y }};
-
-	static char title[10];
-	snprintf(title, 10, "%.0f, %.0f", x, y);
-	glfwSetWindowTitle(window.handle, title);
 }
 
 static void _key_callback(GLFWwindow* handle, int key, int scancode, int action, int mods) {
