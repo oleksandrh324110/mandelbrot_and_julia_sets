@@ -7,7 +7,8 @@ $(error target is NOT defined)
 endif
 
 CFLAGS = -std=c11 -O0 -MMD -MP
-CFLAGS += -Wall -Wextra -Wpedantic -Wno-unused-parameter
+CFLAGS += -Wall -Wextra -Wpedantic
+CFLAGS += -Wno-unused-parameter
 CFLAGS += -Ilibs/glad/include -Ilibs/glfw/include -Ilibs/cglm/include
 LDFLAGS = libs/glad/src/gl.o libs/glfw/src/libglfw3.a -Ilibs/cglm/libcglm.a -lm
 
