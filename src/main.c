@@ -6,10 +6,6 @@
 
 #include "cglm/struct.h"
 
-static void _cursor_enter_callback(GLFWwindow* window, int entered) {
-  printf(entered ? "enter\n" : "leave\n");
-}
-
 int main(void) {
   glfwInit();
 
@@ -26,7 +22,6 @@ int main(void) {
   glfwMakeContextCurrent(window);
 
   glfwSwapInterval(1);
-  glfwSetCursorEnterCallback(window, _cursor_enter_callback);
 
   gladLoadGL(glfwGetProcAddress);
 
@@ -34,14 +29,37 @@ int main(void) {
   glGenVertexArrays(1, &vao);
   glBindVertexArray(vao);
 
+  ivec2s screen_size;
+  ivec2s window_pos;
+  ivec2s window_mouse_pos;
+  ivec2s screen_mouse_pos;
+
+  double x, y;
+  int x_dir = 1, y_dir = 1;
+
   while (!glfwWindowShouldClose(window)) {
+    glfwGetWindowPos(window, &window_pos.x, &window_pos.y);
+    glfwGetCursorPos(window, &x, &y);
+    window_mouse_pos.x = x;
+    window_mouse_pos.y = y;
+    screen_mouse_pos = glms_ivec2_add(window_mouse_pos, window_pos);
+    printf("%d, %d\n", screen_mouse_pos.x, screen_mouse_pos.y);
+
+    if (screen_mouse_pos.x <= 0 || screen_mouse_pos.x >= 1439)
+      x_dir *= -1;
+    if (screen_mouse_pos.y <= 0 || screen_mouse_pos.y >= 899)
+      y_dir *= -1;
+
+    x += x_dir * 2;
+    y += y_dir * 2;
+
+    glfwSetCursorPos(window, x, y);
+
     glClearColor(1, 1, 1, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
       glfwSetWindowShouldClose(window, GL_TRUE);
-    else if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-      glfwSetInputMode(window, GLFW_CURSOR, glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
 
     glfwSwapBuffers(window);
     glfwPollEvents();
