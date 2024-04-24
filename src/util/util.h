@@ -6,5 +6,6 @@
 #include <math.h>
 #include <assert.h>
 #include <stdint.h>
+#include <string.h>
 
 #include <cglm/struct.h>

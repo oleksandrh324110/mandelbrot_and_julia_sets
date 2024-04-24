@@ -1,5 +1,3 @@
-.PHONY: default-target all lib clean
-
 default-target: all
 
 ifndef target
@@ -19,17 +17,18 @@ else ifeq ($(target), darwin)
 	CC = clang
 	CFLAGS +=
 	LDFLAGS += -framework OpenGL -framework IOKit -framework Cocoa -framework CoreVideo
-	CMAKEFLAGS += MACOSX_DEPLOYMENT_TARGET=14.0
 endif
 
 SRC = $(shell find src -name "*.c")
 OBJ = $(SRC:.c=.o)
 DEP = $(SRC:.c=.d)
 
+.PHONY: default-target all lib clean
+
 all: compile link run
 
 lib:
-	cd lib/glfw && $(CMAKEFLAGS) cmake . && make
+	cd lib/glfw && MACOSX_DEPLOYMENT_TARGET=14.0 cmake . && make
 	cd lib/cglm && cmake . -DCGLM_STATIC=ON && make
 	cd lib/glad && $(CC) -c src/gl.c -o src/gl.o -Iinclude
 
