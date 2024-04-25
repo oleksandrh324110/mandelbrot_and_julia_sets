@@ -32,7 +32,6 @@ int main(void) {
     0.0f,  0.5f, 0.0f
   };
 
-
   VBO vbo = vbo_create(GL_ARRAY_BUFFER, false);
   vbo_bind(vbo);
   vbo_data(vbo, sizeof(vertices), vertices);
