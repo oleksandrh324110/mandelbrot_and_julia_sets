@@ -67,8 +67,9 @@ Shader shader_create(const char* vs_path, const char* fs_path, size_t n, VertexA
   GLint linked;
   glGetProgramiv(self.handle, GL_LINK_STATUS, &linked);
   if (!linked) {
-    char buf[512];
-    snprintf(buf, 512, "[%s, %s]", vs_path, fs_path);
+    size_t len = strlen(vs_path) + strlen(fs_path) + 5;
+    char buf[len];
+    snprintf(buf, len, "[%s, %s]", vs_path, fs_path);
     _log_and_fail(self.handle, "linking", buf, glGetProgramInfoLog, glGetProgramiv);
   }
 

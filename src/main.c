@@ -1,3 +1,5 @@
+#include "util/util.h"
+
 #include "gfx/gfx.h"
 #include "gfx/vao.h"
 #include "gfx/vbo.h"
@@ -10,7 +12,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 int main(void) {
   glfwInit();
 
-  glfwWindowHint(GLFW_SAMPLES, 4);
+  glfwWindowHint(GLFW_SAMPLES, 2);
   glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -23,8 +25,8 @@ int main(void) {
   glfwMakeContextCurrent(window);
   gladLoadGL(glfwGetProcAddress);
 
-  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
   glfwSwapInterval(1);
+  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
   static GLfloat vertices[] = {
    -0.5f, -0.5f, 0.0f,
@@ -32,20 +34,20 @@ int main(void) {
     0.0f,  0.5f, 0.0f
   };
 
-  VBO vbo = vbo_create(GL_ARRAY_BUFFER, false);
-  vbo_bind(vbo);
-  vbo_data(vbo, sizeof(vertices), vertices);
-
   VAO vao = vao_create();
+  VBO vbo = vbo_create(GL_ARRAY_BUFFER, false);
+
   vao_bind(vao);
-  vao_attrib(vao, vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+  vbo_bind(vbo);
+
+  vbo_data(vbo, sizeof(vertices), vertices);
+  vao_attrib(0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
 
   Shader shader = shader_create("res/shaders/main.vs", "res/shaders/main.fs", 0, NULL);
 
   while (!glfwWindowShouldClose(window)) {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glClearColor(0, 0.5, 0, 0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(0.2, 0.2, 0.2, 0);
 
     shader_use(shader);
     glDrawArrays(GL_TRIANGLES, 0, 3);

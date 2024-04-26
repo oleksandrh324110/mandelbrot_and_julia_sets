@@ -14,9 +14,7 @@ void vao_bind(VAO self) {
   glBindVertexArray(self.handle);
 }
 
-void vao_attrib(VAO self, VBO vbo, GLuint index, GLint size, GLenum type, GLsizei stride, const void* pointer) {
-  vao_bind(self);
-  vbo_bind(vbo);
+void vao_attrib(GLuint index, GLint size, GLenum type, GLsizei stride, const void* pointer) {
   switch (type) {
     case GL_BYTE:
     case GL_UNSIGNED_BYTE:

@@ -15,5 +15,6 @@ void vbo_bind(VBO self) {
 }
 
 void vbo_data(VBO self, size_t size, void* data) {
+  vbo_bind(self);
   glBufferData(self.handle, size, data, self.dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 }

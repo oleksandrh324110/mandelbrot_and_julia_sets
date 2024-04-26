@@ -6,7 +6,7 @@
 typedef struct {
   GLuint handle;
   GLenum type;
-  bool dynamic;
+  bool dynamic : 1;
 } VBO;
 
 VBO vbo_create(GLenum type, bool dynamic);
