@@ -16,7 +16,7 @@ ifeq ($(target), linux)
 else ifeq ($(target), darwin)
 	CC = clang
 	CFLAGS +=
-	LDFLAGS += -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
+	LDFLAGS += -framework Cocoa -framework IOKit -framework CoreVideo -framework CoreAudio -framework CoreFoundation -framework OpenGL -framework QuartzCore
 endif
 
 SRC = $(shell find src -name "*.c")
@@ -28,7 +28,7 @@ DEP = $(SRC:.c=.d)
 all: compile link run
 
 lib:
-	cd lib/glfw && cmake . && make
+	cd lib/glfw && cmake . -DCMAKE_OSX_DEPLOYMENT_TARGET=11.0 && make
 	cd lib/cglm && cmake . -DCGLM_STATIC=ON && make
 	cd lib/glad && $(CC) -c src/gl.c -o src/gl.o -Iinclude
 

@@ -12,7 +12,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 int main(void) {
   glfwInit();
 
-  // glfwWindowHint(GLFW_SAMPLES, 2);
+  glfwWindowHint(GLFW_SAMPLES, 2);
   glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
