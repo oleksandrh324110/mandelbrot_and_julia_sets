@@ -39,19 +39,20 @@ int main(void) {
   gladLoadGL(glfwGetProcAddress);
 
   static GLfloat vertices[] = {
-    -0.5f, -0.5f, 0.0f,
-     0.5f, -0.5f, 0.0f,
-     0.0f,  0.5f, 0.0f
+    -0.5, -0.5, 0.0,  1, 0, 0,
+     0.5, -0.5, 0.0,  0, 1, 0,
+     0.0,  0.5, 0.0,  0, 0, 1
   };
 
   VAO vao = vao_create();
   VBO vbo = vbo_create(GL_ARRAY_BUFFER, GL_STATIC_DRAW);
 
-  vao_bind(vao);
   vbo_bind(vbo);
+  vao_bind(vao);
 
   vbo_buffer(vbo, sizeof(vertices), vertices);
-  vao_attrib(0, 3, GL_FLOAT, 3 * sizeof(float), 0);
+  vao_attrib(0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+  vao_attrib(1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(GL_FLOAT)));
 
   Shader shader = shader_create("res/shaders/main.vs", "res/shaders/main.fs", 0, NULL);
 
@@ -74,8 +75,6 @@ int main(void) {
 
     xPos += dir.x;
     yPos += dir.y;
-
-    printf("%lf, %lf\n", xPos, yPos);
 
     if (xPos < 0 || xPos >= 720) {
       xPos = glm_clamp(xPos, 0, 720);
