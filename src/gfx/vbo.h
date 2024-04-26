@@ -5,11 +5,11 @@
 
 typedef struct {
   GLuint handle;
-  GLenum type;
-  bool dynamic : 1;
+  GLenum target;
+  GLenum usage;
 } VBO;
 
-VBO vbo_create(GLenum type, bool dynamic);
+VBO vbo_create(GLenum type, GLenum usage);
 void vbo_destroy(VBO self);
 void vbo_bind(VBO self);
-void vbo_data(VBO self, size_t size, void* data);
+void vbo_buffer(VBO self, GLsizeiptr size, const GLvoid* data);

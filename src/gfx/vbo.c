@@ -1,7 +1,7 @@
 #include "vbo.h"
 
-VBO vbo_create(GLenum type, bool dynamic) {
-  VBO self = {.type = type, .dynamic = dynamic};
+VBO vbo_create(GLenum target, GLenum usage) {
+  VBO self = {.target = target, .usage = usage};
   glGenBuffers(1, &self.handle);
   return self;
 }
@@ -11,10 +11,9 @@ void vbo_destroy(VBO self) {
 }
 
 void vbo_bind(VBO self) {
-  glBindBuffer(self.type, self.handle);
+  glBindBuffer(self.target, self.handle);
 }
 
-void vbo_data(VBO self, size_t size, void* data) {
-  vbo_bind(self);
-  glBufferData(self.handle, size, data, self.dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+void vbo_buffer(VBO self, GLsizeiptr size, const GLvoid* data) {
+  glBufferData(self.target, size, data, self.usage);
 }
