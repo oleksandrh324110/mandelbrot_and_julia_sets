@@ -79,10 +79,10 @@ int main(void) {
   vbo_bind(ebo);
 
   while (!glfwWindowShouldClose(window)) {
-    glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(239 / 255.0, 234 / 255.0, 234 / 255.0, 0);
+    glClear(GL_COLOR_BUFFER_BIT);
 
-    shader_bind(shader);
+    shader_use(shader);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
