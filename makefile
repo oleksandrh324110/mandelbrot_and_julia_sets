@@ -17,7 +17,7 @@ else ifeq ($(target), darwin)
 	CC = clang
 	CFLAGS +=
 	LDFLAGS += -framework Cocoa -framework IOKit -framework QuartzCore
-	MACOS_VERSION = $(shell sw_vers -productVersion | cut -c 1-2)
+	GLFW_CMAKE_FLAGS = -DCMAKE_OSX_DEPLOYMENT_TARGET=$(shell sw_vers -productVersion | cut -c 1-2)
 endif
 
 SRC = $(shell find src -name "*.c")
@@ -29,7 +29,7 @@ DEP = $(SRC:.c=.d)
 all: compile link run
 
 lib:
-	cd lib/glfw && cmake . -DCMAKE_OSX_DEPLOYMENT_TARGET=$(MACOS_VERSION) && make
+	cd lib/glfw && cmake . $(GLFW_CMAKE_FLAGS) && make
 	cd lib/cglm && cmake . -DCGLM_STATIC=ON && make
 	cd lib/glad && $(CC) -c src/gl.c -o src/gl.o -Iinclude
 

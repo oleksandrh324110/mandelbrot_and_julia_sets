@@ -5,8 +5,6 @@
 #include "gfx/vbo.h"
 #include "gfx/shader.h"
 
-#include <math.h>
-
 void _framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
 }
@@ -20,17 +18,19 @@ int main(void) {
   glfwInit();
 
   // glfwWindowHint(GLFW_SAMPLES, 2);
-  glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+  // glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
+  // glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
+  glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 #ifdef __APPLE__
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
   GLFWwindow* window = glfwCreateWindow(720, 480, "OpenGL", NULL, NULL);
   glfwMakeContextCurrent(window);
-
 
   glfwSwapInterval(1);
   glfwSetFramebufferSizeCallback(window, _framebuffer_size_callback);
@@ -39,9 +39,10 @@ int main(void) {
   gladLoadGL(glfwGetProcAddress);
 
   static GLfloat vertices[] = {
-    -0.5, -0.5, 0.0,  1, 0, 0,
-     0.5, -0.5, 0.0,  0, 1, 0,
-     0.0,  0.5, 0.0,  0, 0, 1
+    // coords       colors
+   -0.5, -0.5, 0.0, 1, 0, 0,
+    0.5, -0.5, 0.0, 0, 1, 0,
+    0.0,  0.5, 0.0, 0, 0, 1,
   };
 
   VAO vao = vao_create();
@@ -56,35 +57,9 @@ int main(void) {
 
   Shader shader = shader_create("res/shaders/main.vs", "res/shaders/main.fs", 0, NULL);
 
-  const GLFWvidmode* vide_mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-  (void)vide_mode;
-
-  struct Dir {
-    int x;
-    int y;
-  };
-
-  struct Dir dir = {1, 1};
-
-  double xPos, yPos;
-  glfwGetCursorPos(window, &xPos, &yPos);
-
   while (!glfwWindowShouldClose(window)) {
     glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(0.2, 0.2, 0.2, 0);
-
-    xPos += dir.x;
-    yPos += dir.y;
-
-    if (xPos < 0 || xPos >= 720) {
-      xPos = glm_clamp(xPos, 0, 720);
-      dir.x *= -1;
-    } else if (yPos < 0 || yPos >= 480) {
-      yPos = glm_clamp(yPos, 0, 480);
-      dir.y *= -1;
-    }
-
-    glfwSetCursorPos(window, xPos, yPos);
+    glClearColor(0, 0, 0, 0);
 
     shader_bind(shader);
     glDrawArrays(GL_TRIANGLES, 0, 3);
