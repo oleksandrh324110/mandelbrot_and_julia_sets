@@ -92,3 +92,27 @@ void shader_bind(Shader self) {
 void shader_use(Shader self) {
   shader_bind(self);
 }
+
+void shader_uniform_float(Shader self, const char* name, GLfloat f) {
+  glUniform1f(glGetUniformLocation(self.handle, name), f);
+}
+
+void shader_uniform_vec2(Shader self, const char* name, vec2s v) {
+  glUniform2f(glGetUniformLocation(self.handle, name), v.x, v.y);
+}
+
+void shader_uniform_vec3(Shader self, const char* name, vec3s v) {
+  glUniform3f(glGetUniformLocation(self.handle, name), v.x, v.y, v.z);
+}
+
+void shader_uniform_vec4(Shader self, const char* name, vec4s v) {
+  glUniform4f(glGetUniformLocation(self.handle, name), v.x, v.y, v.z, v.w);
+}
+
+void shader_uniform_int(Shader self, const char* name, GLint value) {
+  glUniform1i(glGetUniformLocation(self.handle, name), value);
+}
+
+void shader_uniform_uint(Shader self, const char* name, GLuint v) {
+  glUniform1ui(glGetUniformLocation(self.handle, name), v);
+}

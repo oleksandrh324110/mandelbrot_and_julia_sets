@@ -5,16 +5,25 @@
 #include "gfx/vbo.h"
 #include "gfx/shader.h"
 
-void _framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+vec2s rect_coords;
+
+static void _framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
 }
 
-void _key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+static void _scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+  printf("xoffset: %f, yoffset: %f\n", xoffset, yoffset);
+  rect_coords.x += xoffset;
+  rect_coords.y += -yoffset;
+}
+
+static void _key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
   static bool pressed = false;
 
   if (key == GLFW_KEY_Q && action == GLFW_PRESS)
     glfwSetWindowShouldClose(window, GL_TRUE);
-  else if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+
+  if (key == GLFW_KEY_P && action == GLFW_PRESS) {
     if (pressed) {
       glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
       pressed = false;
@@ -22,6 +31,16 @@ void _key_callback(GLFWwindow* window, int key, int scancode, int action, int mo
       glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
       pressed = true;
     }
+  }
+
+  if (key == GLFW_KEY_LEFT && action != GLFW_RELEASE) {
+    rect_coords.x -= 1.0 / 100;
+  } if (key == GLFW_KEY_RIGHT && action != GLFW_RELEASE) {
+    rect_coords.x += 1.0 / 100;
+  } if (key == GLFW_KEY_UP && action != GLFW_RELEASE) {
+    rect_coords.y += 1.0 / 100;
+  } if (key == GLFW_KEY_DOWN && action != GLFW_RELEASE) {
+    rect_coords.y -= 1.0 / 100;
   }
 }
 
@@ -46,6 +65,8 @@ int main(void) {
   glfwSwapInterval(1);
   glfwSetFramebufferSizeCallback(window, _framebuffer_size_callback);
   glfwSetKeyCallback(window, _key_callback);
+  glfwSetKeyCallback(window, _key_callback);
+  glfwSetScrollCallback(window, _scroll_callback);
 
   gladLoadGL(glfwGetProcAddress);
 
@@ -74,19 +95,20 @@ int main(void) {
   vao_bind(vao);
   vao_attrib(0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
 
-  Shader shader = shader_create("res/shaders/main.vs", "res/shaders/main.fs", 0, NULL);
+  VertexAttr attributes[] = {{0, "aPos"}};
+  Shader shader = shader_create("res/shaders/main.vs", "res/shaders/main.fs", 1, attributes);
 
   vbo_bind(ebo);
-
   while (!glfwWindowShouldClose(window)) {
-    glClearColor(239 / 255.0, 234 / 255.0, 234 / 255.0, 0);
+    glClearColor(47 / 255.0, 43 / 255.0, 48 / 255.0, 0);
     glClear(GL_COLOR_BUFFER_BIT);
 
     shader_use(shader);
+    shader_uniform_vec2(shader, "offset", rect_coords);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
-    glfwPollEvents();
+    glfwWaitEvents();
   }
 
   glfwTerminate();
