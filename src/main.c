@@ -6,15 +6,15 @@
 #include "gfx/shader.h"
 
 vec2s rect_coords;
+vec2s scroll_vel;
 
 static void _framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   glViewport(0, 0, width, height);
 }
 
 static void _scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-  printf("xoffset: %f, yoffset: %f\n", xoffset, yoffset);
-  rect_coords.x += xoffset;
-  rect_coords.y += -yoffset;
+  scroll_vel.x += xoffset;
+  scroll_vel.y += -yoffset;
 }
 
 static void _key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -100,6 +100,9 @@ int main(void) {
 
   vbo_bind(ebo);
   while (!glfwWindowShouldClose(window)) {
+    rect_coords.x += (scroll_vel.x - rect_coords.x) * 0.1;
+    rect_coords.y += (scroll_vel.y - rect_coords.y) * 0.1;
+
     glClearColor(47 / 255.0, 43 / 255.0, 48 / 255.0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -108,7 +111,7 @@ int main(void) {
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
-    glfwWaitEvents();
+    glfwPollEvents();
   }
 
   glfwTerminate();
