@@ -100,7 +100,7 @@ int main(void) {
 
   vbo_bind(ebo);
   while (!glfwWindowShouldClose(window)) {
-    glClearColor(47 / 255.0, 43 / 255.0, 48 / 255.0, 0);
+    glClearColor(47 / 255.0, 43 / 255.0, 48 / 255.0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
     shader_use(shader);
