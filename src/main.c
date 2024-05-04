@@ -4,79 +4,61 @@
 #include "gfx/vao.h"
 #include "gfx/vbo.h"
 #include "gfx/shader.h"
+#include "gfx/window.h"
 
-vec2s rect_coords;
-vec2s scroll_vel;
+Shader shader;
 
-static void _framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-  glViewport(0, 0, width, height);
+void init() {
+  window.mouse.zoom = window.mouse.smooth_zoom = 1;
 }
 
-static void _scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
-  scroll_vel.x += xoffset;
-  scroll_vel.y += -yoffset;
+void destroy() {
+
 }
 
-static void _key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-  static bool pressed = false;
+void update() {
+  if (window.keyboard.keys[GLFW_KEY_Q].pressed)
+    glfwSetWindowShouldClose(window.handle, GLFW_TRUE);
 
-  if (key == GLFW_KEY_Q && action == GLFW_PRESS)
-    glfwSetWindowShouldClose(window, GL_TRUE);
-
-  if (key == GLFW_KEY_P && action == GLFW_PRESS) {
-    if (pressed) {
-      glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-      pressed = false;
-    } else {
-      glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-      pressed = true;
-    }
+  if (window.mouse.buttons[GLFW_MOUSE_BUTTON_LEFT].down) {
+    glfwSetCursor(window.handle, window.mouse.hand_cursor);
+    window.mouse.scroll.x += -window.mouse.delta.x / window.size.x * window.aspect_ratio;
+    window.mouse.scroll.y += window.mouse.delta.y / window.size.y;
+  } else {
+    glfwSetCursor(window.handle, window.mouse.arrow_cursor);
   }
 
-  if (key == GLFW_KEY_LEFT && action != GLFW_RELEASE) {
-    rect_coords.x -= 1.0 / 100;
-  } if (key == GLFW_KEY_RIGHT && action != GLFW_RELEASE) {
-    rect_coords.x += 1.0 / 100;
-  } if (key == GLFW_KEY_UP && action != GLFW_RELEASE) {
-    rect_coords.y += 1.0 / 100;
-  } if (key == GLFW_KEY_DOWN && action != GLFW_RELEASE) {
-    rect_coords.y -= 1.0 / 100;
-  }
+  window.mouse.smooth_scroll = glms_vec2_add(
+    window.mouse.smooth_scroll,
+    glms_vec2_scale(glms_vec2_sub(window.mouse.scroll, window.mouse.smooth_scroll), 0.1)
+  );
+  window.mouse.smooth_zoom += (window.mouse.zoom - window.mouse.smooth_zoom) * 0.1;
+
+  shader_uniform_vec2(shader, "resolution", window.size);
+  shader_uniform_vec2(shader, "scroll", window.mouse.smooth_scroll);
+  shader_uniform_float(shader, "zoom", window.mouse.smooth_zoom);
+
+  // printf("Resolution: %f, %f\n", window.size.x, window.size.y);
+  // printf("Scroll: %f, %f\n", window.mouse.smooth_scroll.x, window.mouse.smooth_scroll.y);
+  // printf("Zoom: %f\n", window.mouse.smooth_zoom);
+}
+
+void render() {
+  glClearColor(1, 0, 1, 1);
+  glClear(GL_COLOR_BUFFER_BIT);
+
+  glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 int main(void) {
-  glfwInit();
-
-  // glfwWindowHint(GLFW_SAMPLES, 2);
-  // glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
-  // glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER, GLFW_TRUE);
-  glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-  GLFWwindow* window = glfwCreateWindow(720, 480, "OpenGL", NULL, NULL);
-  glfwMakeContextCurrent(window);
-
-  glfwSwapInterval(1);
-  glfwSetFramebufferSizeCallback(window, _framebuffer_size_callback);
-  glfwSetKeyCallback(window, _key_callback);
-  glfwSetKeyCallback(window, _key_callback);
-  glfwSetScrollCallback(window, _scroll_callback);
-
-  gladLoadGL(glfwGetProcAddress);
+  window_create((vec2s) { { 1440, 820 } }, "Hello, World!", init, destroy, update, render);
 
   GLfloat vertices[] = {
-    0.5f,  0.5f, 0.0f,  // top right
-    0.5f, -0.5f, 0.0f,  // bottom right
-   -0.5f, -0.5f, 0.0f,  // bottom left
-   -0.5f,  0.5f, 0.0f   // top left 
+    1, 1, 0,
+    1, -1, 0,
+    -1, -1, 0,
+    -1, 1, 0
   };
-
   GLuint indices[] = {
     0, 1, 2,
     2, 3, 0
@@ -86,34 +68,20 @@ int main(void) {
   VBO ebo = vbo_create(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW);
   VAO vao = vao_create();
 
+  vao_bind(vao);
+
   vbo_bind(vbo);
   vbo_buffer(vbo, sizeof(vertices), vertices);
 
   vbo_bind(ebo);
   vbo_buffer(ebo, sizeof(indices), indices);
 
-  vao_bind(vao);
-  vao_attrib(0, 3, GL_FLOAT, 3 * sizeof(float), (void*)0);
+  vao_attrib(0, 3, GL_FLOAT, 3 * sizeof(GLfloat), (void*)0);
 
-  VertexAttr attributes[] = {{0, "aPos"}};
-  Shader shader = shader_create("res/shaders/main.vs", "res/shaders/main.fs", 1, attributes);
+  VertexAttr attr[] = { { 0, "aPos" } };
+  shader = shader_create("res/shaders/main.vs", "res/shaders/main.fs", 1, attr);
+  shader_use(shader);
 
-  vbo_bind(ebo);
-  while (!glfwWindowShouldClose(window)) {
-    rect_coords.x += (scroll_vel.x - rect_coords.x) * 0.1;
-    rect_coords.y += (scroll_vel.y - rect_coords.y) * 0.1;
-
-    glClearColor(47 / 255.0, 43 / 255.0, 48 / 255.0, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    shader_use(shader);
-    shader_uniform_vec2(shader, "offset", rect_coords);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    glfwSwapBuffers(window);
-    glfwPollEvents();
-  }
-
-  glfwTerminate();
+  window_loop();
   return 0;
 }
