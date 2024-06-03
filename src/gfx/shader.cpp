@@ -36,13 +36,10 @@ Shader::Shader(const char* vs_path, const char* fs_path) {
   GLint success;
   glGetShaderiv(vs_id, GL_COMPILE_STATUS, &success);
   if (!success) {
-    GLint log_length;
-    glGetShaderiv(vs_id, GL_INFO_LOG_LENGTH, &log_length);
-    std::cout << log_length << std::endl;
-    char log_info[log_length];
-    glGetShaderInfoLog(vs_id, log_length, NULL, log_info);
+    char info_log[512];
+    glGetShaderInfoLog(vs_id, 512, NULL, info_log);
     std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
-              << log_info << std::endl;
+              << info_log << std::endl;
   }
   glGetShaderiv(fs_id, GL_COMPILE_STATUS, &success);
   if (!success) {
