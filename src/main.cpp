@@ -10,11 +10,7 @@
 
 #include "gfx/shader.h"
 
-void processInput(GLFWwindow* window);
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-
-bool polygon_mode = true;
-bool polygon_mode_released = false;
+int polygon_mode = GL_FILL;
 
 int main(void) {
   glfwInit();
@@ -30,7 +26,10 @@ int main(void) {
   glfwMakeContextCurrent(window);
   gladLoadGL(glfwGetProcAddress);
 
-  glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+  glfwSetFramebufferSizeCallback(window,
+                                 [](GLFWwindow* window, int width, int height) {
+                                   glViewport(0, 0, width, height);
+                                 });
 
   GLfloat vertices[] = {0.5f,  0.5f,  0.0f, 0.5f,  -0.5f, 0.0f,
                         -0.5f, -0.5f, 0.0f, -0.5f, 0.5f,  0.0f};
@@ -59,33 +58,61 @@ int main(void) {
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO();
-  ImGui::StyleColorsClassic();
+  (void)io;
+  io.ConfigFlags |=
+      ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad |
+      ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_ViewportsEnable;
+  ImGui::StyleColorsDark();
+  ImGuiStyle& style = ImGui::GetStyle();
+  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+    style.WindowRounding = 0.0f;
+    style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+  }
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init("#version 330");
 
   while (!glfwWindowShouldClose(window)) {
-    processInput(window);
-
-    glClearColor(0, 0, 0, 1);
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
-
-    shader.use();
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    ImGui::Begin("Title");
-    ImGui::Text("Content");
-    ImGui::End();
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-    glfwSwapBuffers(window);
     glfwPollEvents();
+
+    if (glfwGetKey(window, GLFW_KEY_Q))
+      glfwSetWindowShouldClose(window, true);
+
+    {
+      ImGui_ImplOpenGL3_NewFrame();
+      ImGui_ImplGlfw_NewFrame();
+      ImGui::NewFrame();
+
+      ImGui::Begin("Title");
+      {
+        ImGui::Text("Polygon mode:");
+        ImGui::RadioButton("GL_LINE", &polygon_mode, GL_LINE);
+        ImGui::RadioButton("GL_FILL", &polygon_mode, GL_FILL);
+      }
+      ImGui::End();
+    }
+    {
+      glClearColor(0, 0, 0, 1);
+      glClear(GL_COLOR_BUFFER_BIT);
+
+      shader.use();
+      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+      glPolygonMode(GL_FRONT_AND_BACK,
+                    polygon_mode == GL_LINE ? GL_LINE : GL_FILL);
+      glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    }
+    {
+      ImGui::Render();
+      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+      ImGui::EndFrame();
+
+      if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+        GLFWwindow* backup_current_context = glfwGetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(backup_current_context);
+      }
+    }
+    glfwSwapBuffers(window);
   }
 
   ImGui_ImplOpenGL3_Shutdown();
@@ -93,21 +120,4 @@ int main(void) {
   ImGui::DestroyContext();
 
   glfwTerminate();
-}
-
-void processInput(GLFWwindow* window) {
-  if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
-    glfwSetWindowShouldClose(window, true);
-
-  if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS && polygon_mode_released) {
-    glPolygonMode(GL_FRONT_AND_BACK, polygon_mode ? GL_LINE : GL_FILL);
-    polygon_mode = !polygon_mode;
-    polygon_mode_released = false;
-  }
-  if (glfwGetKey(window, GLFW_KEY_P) == GLFW_RELEASE)
-    polygon_mode_released = true;
-}
-
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-  glViewport(0, 0, width, height);
 }
