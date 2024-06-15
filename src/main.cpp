@@ -59,19 +59,10 @@ int main(void) {
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO();
   (void)io;
-  int fbWidth, fbHeight;
-  glfwGetFramebufferSize(window, &fbWidth, &fbHeight);
-
-  int winWidth, winHeight;
-  glfwGetWindowSize(window, &winWidth, &winHeight);
-
-  io.DisplayFramebufferScale = {2, 2};
-  io.DisplaySize = ImVec2((float)fbWidth, (float)fbHeight);
-
   io.ConfigFlags |=
       ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad |
       ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_ViewportsEnable;
-  ImGui::StyleColorsDark();
+  ImGui::StyleColorsLight();
   ImGuiStyle& style = ImGui::GetStyle();
   if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
     style.WindowRounding = 0.0f;
