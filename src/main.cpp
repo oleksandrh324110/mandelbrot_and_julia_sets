@@ -10,8 +10,6 @@
 
 #include "gfx/shader.h"
 
-int polygon_mode = GL_FILL;
-
 int main(void) {
   glfwInit();
 
@@ -22,7 +20,7 @@ int main(void) {
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 
-  GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL", nullptr, nullptr);
+  GLFWwindow* window = glfwCreateWindow(720, 480, "OpenGL", nullptr, nullptr);
   glfwMakeContextCurrent(window);
   gladLoadGL(glfwGetProcAddress);
 
@@ -31,9 +29,9 @@ int main(void) {
                                    glViewport(0, 0, width, height);
                                  });
 
-  GLfloat vertices[] = {0.5f,  0.5f,  0.0f, 0.5f,  -0.5f, 0.0f,
-                        -0.5f, -0.5f, 0.0f, -0.5f, 0.5f,  0.0f};
+  GLfloat vertices[] = {1, 1, 0.0f, 1, -1, 0.0f, -1, -1, 0.0f, -1, 1, 0.0f};
   GLuint indicies[] = {0, 1, 2, 2, 3, 0};
+  float texCoords[] = {0, 0, 1, 0, 0.5, 1};
 
   GLuint VAO;
   glGenVertexArrays(1, &VAO);
@@ -71,6 +69,9 @@ int main(void) {
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init("#version 330");
 
+  int polygon_mode = GL_FILL;
+
+  int window_w, window_h;
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
 
@@ -91,9 +92,12 @@ int main(void) {
       ImGui::End();
     }
     {
-      glClearColor(0, 0, 0, 1);
+      glClearColor(0.1, 0.1, 0.1, 1);
       glClear(GL_COLOR_BUFFER_BIT);
 
+      glfwGetWindowSize(window, &window_w, &window_h);
+      shader.setFloat("window_w", window_w);
+      shader.setFloat("window_h", window_h);
       shader.use();
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
       glPolygonMode(GL_FRONT_AND_BACK,
