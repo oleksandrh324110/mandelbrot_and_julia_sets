@@ -75,12 +75,18 @@ Shader::Shader(const char* vs_path, const char* fs_path) {
 }
 
 void Shader::use() const { glUseProgram(_id); }
-void Shader::setBool(const char* name, GLboolean value) const {
+void Shader::set_bool(const char* name, GLboolean value) const {
   glUniform1i(glGetUniformLocation(_id, name), (int)value);
 }
-void Shader::setInt(const char* name, GLint value) const {
+void Shader::set_int(const char* name, GLint value) const {
   glUniform1i(glGetUniformLocation(_id, name), value);
 }
-void Shader::setFloat(const char* name, GLfloat value) const {
+void Shader::set_float(const char* name, GLfloat value) const {
   glUniform1f(glGetUniformLocation(_id, name), value);
+}
+void Shader::set_vec2(const char* name, glm::vec2 vec) const {
+  glUniform2f(glGetUniformLocation(_id, name), vec.x, vec.y);
+}
+void Shader::set_ivec2(const char* name, glm::ivec2 vec) const {
+  glUniform2i(glGetUniformLocation(_id, name), vec.x, vec.y);
 }

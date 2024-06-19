@@ -3,6 +3,7 @@
 #include <glad/gl.h>
 
 #include <fstream>
+#include <glm/glm.hpp>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -13,7 +14,9 @@ class Shader {
 
   Shader(const char* vs_path, const char* fs_path);
   void use() const;
-  void setBool(const char* name, GLboolean value) const;
-  void setInt(const char* name, GLint value) const;
-  void setFloat(const char* name, GLfloat value) const;
+  void set_bool(const char* name, GLboolean value) const;
+  void set_int(const char* name, GLint value) const;
+  void set_float(const char* name, GLfloat value) const;
+  void set_vec2(const char* name, glm::vec2 vec) const;
+  void set_ivec2(const char* name, glm::ivec2 vec) const;
 };

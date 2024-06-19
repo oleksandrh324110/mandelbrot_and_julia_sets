@@ -6,3 +6,6 @@
 	path = lib/imgui
 	url = https://github.com/ocornut/imgui
 	branch = docking
+[submodule "lib/glm"]
+	path = lib/glm
+	url = git@github.com:g-truc/glm.git

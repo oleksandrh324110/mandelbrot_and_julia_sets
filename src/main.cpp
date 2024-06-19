@@ -71,7 +71,9 @@ int main(void) {
 
   int polygon_mode = GL_FILL;
 
-  int window_w, window_h;
+  glm::ivec2 window_size;
+  glm::vec2 offset(0, 0);
+  float zoom = 1;
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
 
@@ -86,8 +88,17 @@ int main(void) {
       ImGui::Begin("Title");
       {
         ImGui::Text("Polygon mode:");
-        ImGui::RadioButton("GL_LINE", &polygon_mode, GL_LINE);
-        ImGui::RadioButton("GL_FILL", &polygon_mode, GL_FILL);
+        ImGui::RadioButton("Line Mode (GL_LINE)", &polygon_mode, GL_LINE);
+        ImGui::RadioButton("Fill Mode (GL_FILL)", &polygon_mode, GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK,
+                      polygon_mode == GL_LINE ? GL_LINE : GL_FILL);
+
+        ImGui::Text("Adjust Offset:");
+        ImGui::SliderFloat("x offset", &offset.x, -3 / zoom, 1 / zoom);
+        ImGui::SliderFloat("y offset", &offset.y, -2 / zoom, 2 / zoom);
+
+        ImGui::Text("Zoom:");
+        ImGui::SliderFloat("zoom", &zoom, 0.0001, 1, "%.4f");
       }
       ImGui::End();
     }
@@ -95,13 +106,13 @@ int main(void) {
       glClearColor(0.1, 0.1, 0.1, 1);
       glClear(GL_COLOR_BUFFER_BIT);
 
-      glfwGetWindowSize(window, &window_w, &window_h);
-      shader.setFloat("window_w", window_w);
-      shader.setFloat("window_h", window_h);
+      glfwGetWindowSize(window, &window_size.x, &window_size.y);
+      shader.set_ivec2("window_size", window_size);
+      shader.set_vec2("offset", offset);
+      shader.set_float("zoom", zoom);
+
       shader.use();
       glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-      glPolygonMode(GL_FRONT_AND_BACK,
-                    polygon_mode == GL_LINE ? GL_LINE : GL_FILL);
       glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
     {

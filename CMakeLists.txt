@@ -7,8 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+set(BUILD_SHARED_LIBS ON)
 add_subdirectory("lib/glfw" PUBLIC)
 add_subdirectory("lib/glad")
+add_subdirectory("lib/glm")
 
 file(GLOB IMGUI_SOURCES 
   "lib/imgui/*.cpp"
@@ -21,4 +23,4 @@ include_directories("lib/imgui" "lib/imgui/backends")
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp")
 add_executable(main "${SOURCES}")
-target_link_libraries(main glfw glad imgui)
+target_link_libraries(main glfw glad imgui glm)
