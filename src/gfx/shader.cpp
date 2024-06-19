@@ -75,6 +75,7 @@ Shader::Shader(const char* vs_path, const char* fs_path) {
 }
 
 void Shader::use() const { glUseProgram(_id); }
+
 void Shader::set_bool(const char* name, GLboolean value) const {
   glUniform1i(glGetUniformLocation(_id, name), (int)value);
 }

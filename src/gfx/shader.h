@@ -14,6 +14,7 @@ class Shader {
 
   Shader(const char* vs_path, const char* fs_path);
   void use() const;
+
   void set_bool(const char* name, GLboolean value) const;
   void set_int(const char* name, GLint value) const;
   void set_float(const char* name, GLfloat value) const;

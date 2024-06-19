@@ -30,9 +30,12 @@ int main(void) {
                                    glViewport(0, 0, width, height);
                                  });
 
-  GLfloat vertices[] = {1, 1, 0.0f, 1, -1, 0.0f, -1, -1, 0.0f, -1, 1, 0.0f};
-  GLuint indicies[] = {0, 1, 2, 2, 3, 0};
-  float texCoords[] = {0, 0, 1, 0, 0.5, 1};
+  GLfloat vertices[] = {1,  1,  0,  //
+                        1,  -1, 0,  //
+                        -1, -1, 0,  //
+                        -1, 1,  0};
+  GLuint indicies[] = {0, 1, 2,  //
+                       2, 3, 0};
 
   GLuint VAO;
   glGenVertexArrays(1, &VAO);
@@ -71,10 +74,10 @@ int main(void) {
   ImGui_ImplOpenGL3_Init("#version 330");
 
   int polygon_mode = GL_FILL;
-
   glm::ivec2 window_size;
   glm::vec2 offset(0, 0);
   float zoom = 1;
+
   while (!glfwWindowShouldClose(window)) {
     glfwPollEvents();
 
@@ -104,7 +107,7 @@ int main(void) {
       ImGui::End();
     }
     {
-      glClearColor(0.1, 0.1, 0.1, 1);
+      glClearColor(0.2, 0.2, 0.2, 1);
       glClear(GL_COLOR_BUFFER_BIT);
 
       glfwGetWindowSize(window, &window_size.x, &window_size.y);
