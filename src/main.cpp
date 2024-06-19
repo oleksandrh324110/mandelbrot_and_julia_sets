@@ -6,6 +6,7 @@
 #include <GLFW/glfw3.h>
 #include <glad/gl.h>
 
+#include <algorithm>
 #include <iostream>
 
 #include "gfx/shader.h"
@@ -94,11 +95,11 @@ int main(void) {
                       polygon_mode == GL_LINE ? GL_LINE : GL_FILL);
 
         ImGui::Text("Adjust Offset:");
-        ImGui::SliderFloat("x offset", &offset.x, -3 / zoom, 1 / zoom);
-        ImGui::SliderFloat("y offset", &offset.y, -2 / zoom, 2 / zoom);
+        ImGui::SliderFloat("x offset", &offset.x, -3, 1);
+        ImGui::SliderFloat("y offset", &offset.y, -2, 2);
 
         ImGui::Text("Zoom:");
-        ImGui::SliderFloat("zoom", &zoom, 0.0001, 1, "%.4f");
+        ImGui::SliderFloat("zoom", &zoom, 0.001, 2);
       }
       ImGui::End();
     }

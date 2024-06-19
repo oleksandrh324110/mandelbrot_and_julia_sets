@@ -16,8 +16,8 @@ float map(float value, float min1, float max1, float min2, float max2) { return 
 
 void main() {
     vec2 c = vec2(
-        map(gl_FragCoord.x, 0, width, -2, 2) * aspect + offset.x,
-        map(gl_FragCoord.y, 0, height, -2, 2) + offset.y
+        map(gl_FragCoord.x, 0, width, -2, 2) * aspect + offset.x / zoom,
+        map(gl_FragCoord.y, 0, height, -2, 2) + offset.y / zoom
     );
     c *= zoom;
     
