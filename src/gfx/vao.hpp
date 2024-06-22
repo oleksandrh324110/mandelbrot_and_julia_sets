@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../app.hpp"
+#include "../App.hpp"
 #include "../util/util.hpp"
 #include "gfx.hpp"
 #include "vbo.hpp"
 
-namespace app {
+namespace gfx {
 class VAO {
  public:
   VAO();
@@ -16,6 +16,6 @@ class VAO {
             size_t offset) const;
 
  private:
-  GLuint handle;
+  GLuint _handle;
 };
-};  // namespace app
+};  // namespace gfx

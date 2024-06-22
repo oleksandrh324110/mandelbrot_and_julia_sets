@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../app.hpp"
+#include "../App.hpp"
 #include "../util/util.hpp"
 #include "gfx.hpp"
 
-namespace app {
+namespace gfx {
 class VBO {
  public:
   VBO(GLint type, bool dynamic);
@@ -14,8 +14,8 @@ class VBO {
   void buffer(void* data, size_t offset, size_t count) const;
 
  private:
-  GLuint handle;
-  GLint type;
-  bool dynamic;
+  GLuint _handle;
+  GLint _type;
+  bool _dynamic;
 };
-}  // namespace app
+}  // namespace gfx

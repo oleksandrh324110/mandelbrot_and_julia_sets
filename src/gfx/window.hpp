@@ -1,10 +1,10 @@
 #pragma once
 
-#include "../app.hpp"
+#include "../App.hpp"
 #include "../util/util.hpp"
 #include "gfx.hpp"
 
-namespace app {
+namespace gfx {
 struct Button {
   bool down, last, pressed;
 };
@@ -32,6 +32,10 @@ class Window {
   Mouse mouse;
   Keyboard keyboard;
 
+  VAO vao;
+  VBO vbo;
+  VBO ebo;
+
   double time;
   double last_time;
   double delta_time;
@@ -40,13 +44,17 @@ class Window {
   ~Window();
 
   void update();
+  void render() const;
+
   void clear() const;
   void swap() const;
 
   bool should_close() const;
   void set_should_close(bool value);
 
+  ImGuiIO& get_imgui_io() const;
+
  private:
-  GLFWwindow* handle;
+  GLFWwindow* _handle;
 };
-}  // namespace app
+}  // namespace gfx

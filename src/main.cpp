@@ -1,13 +1,8 @@
-#include "app.hpp"
+#include "App.hpp"
 
 int main(void) {
   GLFWwindow* window = glfwCreateWindow(720, 480, "OpenGL", nullptr, nullptr);
   glfwMakeContextCurrent(window);
-
-  glfwSetFramebufferSizeCallback(window,
-                                 [](GLFWwindow* window, int width, int height) {
-                                   glViewport(0, 0, width, height);
-                                 });
 
   GLfloat vertices[] = {1,  1,  0,  //
                         1,  -1, 0,  //
@@ -34,10 +29,7 @@ int main(void) {
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
 
-  Shader shader("../res/shaders/main.vs", "../res/shaders/main.fs");
-
-  ImGui_ImplGlfw_InitForOpenGL(window, true);
-  ImGui_ImplOpenGL3_Init("#version 330");
+  app::Shader shader("../res/shaders/main.vs", "../res/shaders/main.fs");
 
   int polygon_mode = GL_FILL;
   glm::ivec2 window_size;
