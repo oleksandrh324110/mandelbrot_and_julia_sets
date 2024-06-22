@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../app.hpp"
 #include "../util/util.hpp"
 #include "gfx.hpp"
 
+namespace app {
 class Shader {
  public:
   GLuint _id;
@@ -16,3 +18,4 @@ class Shader {
   void set_vec2(const char* name, glm::vec2 vec) const;
   void set_ivec2(const char* name, glm::ivec2 vec) const;
 };
+};  // namespace app

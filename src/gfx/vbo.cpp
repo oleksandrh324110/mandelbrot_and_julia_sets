@@ -1,5 +1,6 @@
 #include "vbo.hpp"
 
+namespace app {
 VBO::VBO(GLint type, bool dynamic) : type(type), dynamic(dynamic) {
   glGenBuffers(1, &handle);
 }
@@ -15,3 +16,4 @@ void VBO::buffer(void* data, size_t offset, size_t count) const {
     glBufferData(type, count, data, GL_STATIC_DRAW);
   }
 }
+}  // namespace app

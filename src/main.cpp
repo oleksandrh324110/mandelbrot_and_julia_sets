@@ -1,19 +1,8 @@
-#include "gfx/gfx.hpp"
-#include "gfx/shader.hpp"
+#include "app.hpp"
 
 int main(void) {
-  glfwInit();
-
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
   GLFWwindow* window = glfwCreateWindow(720, 480, "OpenGL", nullptr, nullptr);
   glfwMakeContextCurrent(window);
-  gladLoadGL(glfwGetProcAddress);
 
   glfwSetFramebufferSizeCallback(window,
                                  [](GLFWwindow* window, int width, int height) {
@@ -47,19 +36,6 @@ int main(void) {
 
   Shader shader("../res/shaders/main.vs", "../res/shaders/main.fs");
 
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  ImGuiIO& io = ImGui::GetIO();
-  (void)io;
-  io.ConfigFlags |=
-      ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad |
-      ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_ViewportsEnable;
-  ImGui::StyleColorsLight();
-  ImGuiStyle& style = ImGui::GetStyle();
-  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-    style.WindowRounding = 0.0f;
-    style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-  }
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init("#version 330");
 
@@ -97,9 +73,6 @@ int main(void) {
       ImGui::End();
     }
     {
-      glClearColor(0.2, 0.2, 0.2, 1);
-      glClear(GL_COLOR_BUFFER_BIT);
-
       glfwGetWindowSize(window, &window_size.x, &window_size.y);
       shader.set_ivec2("window_size", window_size);
       shader.set_vec2("offset", offset);

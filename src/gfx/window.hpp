@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../app.hpp"
 #include "../util/util.hpp"
 #include "gfx.hpp"
 
+namespace app {
 struct Button {
   bool down, last, pressed;
 };
@@ -27,6 +29,13 @@ class Window {
   glm::vec2 size;
   const char* title;
 
+  Mouse mouse;
+  Keyboard keyboard;
+
+  double time;
+  double last_time;
+  double delta_time;
+
   Window(glm::vec2 size, const char* title);
   ~Window();
 
@@ -37,9 +46,7 @@ class Window {
   bool should_close() const;
   void set_should_close(bool value);
 
-  Mouse mouse;
-  Keyboard keyboard;
-
  private:
   GLFWwindow* handle;
 };
+}  // namespace app

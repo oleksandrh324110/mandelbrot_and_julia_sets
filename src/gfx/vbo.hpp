@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../app.hpp"
 #include "../util/util.hpp"
 #include "gfx.hpp"
 
+namespace app {
 class VBO {
  public:
   VBO(GLint type, bool dynamic);
@@ -16,3 +18,4 @@ class VBO {
   GLint type;
   bool dynamic;
 };
+}  // namespace app

@@ -14,6 +14,7 @@ static void _compile_and_check(GLuint s_id, const char* description) {
   }
 }
 
+namespace app {
 Shader::Shader(const char* vs_path, const char* fs_path) {
   std::string vs_code, fs_code;
   std::ifstream vs_file, fs_file;
@@ -75,7 +76,6 @@ Shader::Shader(const char* vs_path, const char* fs_path) {
 }
 
 void Shader::use() const { glUseProgram(_id); }
-
 void Shader::set_bool(const char* name, GLboolean value) const {
   glUniform1i(glGetUniformLocation(_id, name), (int)value);
 }
@@ -91,3 +91,4 @@ void Shader::set_vec2(const char* name, glm::vec2 vec) const {
 void Shader::set_ivec2(const char* name, glm::ivec2 vec) const {
   glUniform2i(glGetUniformLocation(_id, name), vec.x, vec.y);
 }
+};  // namespace app

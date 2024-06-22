@@ -1,9 +1,11 @@
 #pragma once
 
+#include "../app.hpp"
 #include "../util/util.hpp"
 #include "gfx.hpp"
 #include "vbo.hpp"
 
+namespace app {
 class VAO {
  public:
   VAO();
@@ -16,3 +18,4 @@ class VAO {
  private:
   GLuint handle;
 };
+};  // namespace app
