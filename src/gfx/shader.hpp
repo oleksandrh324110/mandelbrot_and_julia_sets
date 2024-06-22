@@ -1,12 +1,7 @@
 #pragma once
 
-#include <glad/gl.h>
-
-#include <fstream>
-#include <glm/glm.hpp>
-#include <iostream>
-#include <sstream>
-#include <string>
+#include "../util/util.hpp"
+#include "gfx.hpp"
 
 class Shader {
  public:

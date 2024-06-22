@@ -1,4 +1,4 @@
-#include "shader.h"
+#include "shader.hpp"
 
 static void _compile_and_check(GLuint s_id, const char* description) {
   GLint success;

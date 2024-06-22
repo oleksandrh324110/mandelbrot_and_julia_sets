@@ -1,15 +1,5 @@
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
-
-#define GLFW_INCLUDE_NONE
-#include <GLFW/glfw3.h>
-#include <glad/gl.h>
-
-#include <algorithm>
-#include <iostream>
-
-#include "gfx/shader.h"
+#include "gfx/gfx.hpp"
+#include "gfx/shader.hpp"
 
 int main(void) {
   glfwInit();
