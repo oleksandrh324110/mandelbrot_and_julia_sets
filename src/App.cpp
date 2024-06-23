@@ -1,71 +1,32 @@
 #include "App.hpp"
 
-static void glfw_init() {
-  static bool glfw_initialized = false;
-  if (glfw_initialized)
-    return;
-  glfw_initialized = true;
+namespace app {
+App::App() {
+  gfx::glfw_init();
+  gfx::glad_init();
 
-  if (!glfwInit())
-    throw std::runtime_error("Failed to initialize GLFW");
+  mandelbrot_window = gfx::Window({800, 800}, "Mandelbrot Set");
+  julia_window = gfx::Window({800, 800}, "Julia Set");
 
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+  gfx::imgui_init();
+  mandelbrot_window.imgui_init();
+  julia_window.imgui_init();
 }
 
-static void glad_init() {
-  static bool glad_initialized = false;
-  if (glad_initialized)
-    return;
-  glad_initialized = true;
+App::~App() { cleanup(); }
 
-  if (!gladLoadGL(glfwGetProcAddress))
-    throw std::runtime_error("Failed to initialize GLAD");
+void App::run() {
+  init();
+  main_loop();
+  cleanup();
 }
 
-static void imgui_init(GLFWwindow* window) {
-  static bool imgui_initialized = false;
-  if (imgui_initialized)
-    return;
-  imgui_initialized = true;
+void App::init() {}
 
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  ImGuiIO& io = ImGui::GetIO();
-  (void)io;
-  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad |
-                    ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_ViewportsEnable;
-  ImGui::StyleColorsLight();
-  ImGuiStyle& style = ImGui::GetStyle();
-  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-    style.WindowRounding = 0.0f;
-    style.Colors[ImGuiCol_WindowBg].w = 1.0f;
-  }
-  ImGui_ImplGlfw_InitForOpenGL(window, true);
-  ImGui_ImplOpenGL3_Init("#version 330");
+void App::cleanup() {
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
+  glfwTerminate();
 }
-
-static void imgui_new_frame() {
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplGlfw_NewFrame();
-  ImGui::NewFrame();
-}
-
-static void imgui_end_frame(ImGuiIO& io) {
-  ImGui::Render();
-  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-  ImGui::EndFrame();
-
-  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
-    GLFWwindow* backup_current_context = glfwGetCurrentContext();
-    ImGui::UpdatePlatformWindows();
-    ImGui::RenderPlatformWindowsDefault();
-    glfwMakeContextCurrent(backup_current_context);
-  }
-}
-
-app::App::App() {}
+}  // namespace app

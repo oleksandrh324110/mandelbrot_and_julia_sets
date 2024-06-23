@@ -6,6 +6,13 @@
 #include "vbo.hpp"
 
 namespace gfx {
+void glfw_init();
+void glad_init();
+void imgui_init();
+void imgui_new_frame();
+void imgui_render();
+void imgui_end_frame(ImGuiIO& io);
+
 struct Button {
   bool down, last, pressed;
 };
@@ -35,10 +42,13 @@ class Window {
   Window(glm::vec2 size, const char* title);
   ~Window();
 
-  void init(std::function<void()> init_callback);
-  void update(std::function<void()> update_callback);
-  void render(std::function<void()> render_callback) const;
-  void terminate(std::function<void()> terminate_callback);
+  std::function<void()> init_callback;
+  std::function<void()> update_callback;
+  std::function<void()> render_callback;
+  std::function<void()> terminate_callback;
+
+  void update();
+  void render() const;
 
   void clear(glm::vec4 color) const;
   void swap() const;
@@ -48,6 +58,8 @@ class Window {
 
   bool should_close() const;
   void set_should_close(bool value);
+
+  void imgui_init() const;
 
  private:
   GLFWwindow* handle;

@@ -1,6 +1,77 @@
 #include "window.hpp"
 
 namespace gfx {
+void glfw_init() {
+  static bool glfw_initialized = false;
+  if (glfw_initialized)
+    return;
+  glfw_initialized = true;
+
+  if (!glfwInit())
+    throw std::runtime_error("Failed to initialize GLFW");
+
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+#ifdef __APPLE__
+  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+}
+
+void glad_init() {
+  static bool glad_initialized = false;
+  if (glad_initialized)
+    return;
+  glad_initialized = true;
+
+  if (!gladLoadGL(glfwGetProcAddress))
+    throw std::runtime_error("Failed to initialize GLAD");
+}
+
+void imgui_init() {
+  static bool imgui_initialized = false;
+  if (imgui_initialized)
+    return;
+  imgui_initialized = true;
+
+  IMGUI_CHECKVERSION();
+  ImGui::CreateContext();
+  ImGuiIO& io = ImGui::GetIO();
+  (void)io;
+  io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard | ImGuiConfigFlags_NavEnableGamepad |
+                    ImGuiConfigFlags_DockingEnable | ImGuiConfigFlags_ViewportsEnable;
+  ImGui::StyleColorsLight();
+  ImGuiStyle& style = ImGui::GetStyle();
+  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+    style.WindowRounding = 0.0f;
+    style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+  }
+}
+
+void imgui_new_frame() {
+  ImGui_ImplOpenGL3_NewFrame();
+  ImGui_ImplGlfw_NewFrame();
+  ImGui::NewFrame();
+}
+
+void imgui_render() {
+  ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void imgui_end_frame(ImGuiIO& io) {
+  ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+  ImGui::EndFrame();
+
+  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+    GLFWwindow* backup_current_context = glfwGetCurrentContext();
+    ImGui::UpdatePlatformWindows();
+    ImGui::RenderPlatformWindowsDefault();
+    glfwMakeContextCurrent(backup_current_context);
+  }
+}
+
 Window::Window() {}
 
 Window::Window(glm::vec2 size, const char* title) {
@@ -45,11 +116,6 @@ Window::Window(glm::vec2 size, const char* title) {
 
 Window::~Window() { glfwDestroyWindow(handle); }
 
-void Window::init(std::function<void()> init_callback) { init_callback(); }
-void Window::update(std::function<void()> update_callback) { update_callback(); }
-void Window::render(std::function<void()> render_callback) const { render_callback(); }
-void Window::terminate(std::function<void()> terminate_callback) { terminate_callback(); }
-
 void Window::clear(glm::vec4 color = {1, 1, 1, 1}) const {
   glClearColor(color.x, color.y, color.z, color.w);
   glClear(GL_COLOR_BUFFER_BIT);
@@ -59,4 +125,8 @@ void Window::poll_events() const { glfwPollEvents(); }
 void Window::wait_events() const { glfwWaitEvents(); }
 bool Window::should_close() const { return glfwWindowShouldClose(handle); }
 void Window::set_should_close(bool value) { glfwSetWindowShouldClose(handle, value); }
+void Window::imgui_init() const {
+  ImGui_ImplGlfw_InitForOpenGL(handle, true);
+  ImGui_ImplOpenGL3_Init("#version 330");
+}
 }  // namespace gfx
