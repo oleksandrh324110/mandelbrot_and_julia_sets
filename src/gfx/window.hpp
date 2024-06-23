@@ -1,8 +1,9 @@
 #pragma once
 
-#include "../App.hpp"
-#include "../util/util.hpp"
-#include "gfx.hpp"
+#include "includes.hpp"
+#include "shader.cpp"
+#include "vao.cpp"
+#include "vbo.cpp"
 
 namespace gfx {
 struct Button {
@@ -30,18 +31,7 @@ class Window {
   glm::vec2 size;
   const char* title;
 
-  Mouse mouse;
-  Keyboard keyboard;
-
-  gfx::VAO vao;
-  gfx::VBO vbo;
-  gfx::VBO ebo;
-  gfx::Shader shader;
-
-  double time;
-  double last_time;
-  double delta_time;
-
+  Window();
   Window(glm::vec2 size, const char* title);
   ~Window();
 
@@ -60,6 +50,20 @@ class Window {
   void set_should_close(bool value);
 
  private:
-  GLFWwindow* _handle;
+  GLFWwindow* handle;
+
+  Mouse mouse;
+  Keyboard keyboard;
+
+  GLfloat* vertices;
+  GLuint* indicies;
+  VAO vao;
+  VBO vbo;
+  VBO ebo;
+  Shader shader;
+
+  double time;
+  double last_time;
+  double delta_time;
 };
 }  // namespace gfx

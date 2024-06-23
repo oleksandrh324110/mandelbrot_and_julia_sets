@@ -1,8 +1,6 @@
 #pragma once
 
-#include "../App.hpp"
-#include "../util/util.hpp"
-#include "gfx.hpp"
+#include "includes.hpp"
 
 namespace gfx {
 class VBO {
@@ -15,7 +13,7 @@ class VBO {
   void buffer(void* data, size_t offset, size_t count) const;
 
  private:
-  GLuint _handle;
+  GLuint handle;
   GLint _type;
   bool _dynamic;
 };

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "../App.hpp"
-#include "../util/util.hpp"
-#include "gfx.hpp"
+#include "includes.hpp"
 #include "vbo.hpp"
 
 namespace gfx {
@@ -15,6 +13,6 @@ class VAO {
   void attr(VBO& vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset) const;
 
  private:
-  GLuint _handle;
+  GLuint handle;
 };
 };  // namespace gfx

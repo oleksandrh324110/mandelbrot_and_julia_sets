@@ -1,17 +1,16 @@
 #pragma once
 
 #include "gfx/gfx.hpp"
-#include "util/util.hpp"
 
 namespace app {
 class App {
  public:
-  ImGuiIO& imgui_io;
-
   App();
   ~App();
 
   void run();
+
+  ImGuiIO& get_imgui_io() const;
 
  private:
   gfx::Window mandelbrot_window;

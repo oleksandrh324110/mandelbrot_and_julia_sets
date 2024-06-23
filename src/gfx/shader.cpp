@@ -54,18 +54,18 @@ Shader::Shader(const char* vs_path, const char* fs_path) {
   _compile_and_check(vs_id, "VERTEX");
   _compile_and_check(fs_id, "FRAGMENT");
 
-  _handle = glCreateProgram();
-  glAttachShader(_handle, vs_id);
-  glAttachShader(_handle, fs_id);
-  glLinkProgram(_handle);
+  handle = glCreateProgram();
+  glAttachShader(handle, vs_id);
+  glAttachShader(handle, fs_id);
+  glLinkProgram(handle);
 
   GLint success;
-  glGetProgramiv(_handle, GL_LINK_STATUS, &success);
+  glGetProgramiv(handle, GL_LINK_STATUS, &success);
   if (!success) {
     GLint log_length;
-    glGetProgramiv(_handle, GL_INFO_LOG_LENGTH, &log_length);
+    glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &log_length);
     char log_info[log_length];
-    glGetProgramInfoLog(_handle, log_length, NULL, log_info);
+    glGetProgramInfoLog(handle, log_length, NULL, log_info);
 
     std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << log_info << std::endl;
   }
@@ -74,22 +74,22 @@ Shader::Shader(const char* vs_path, const char* fs_path) {
   glDeleteShader(fs_id);
 }
 
-Shader::~Shader() { glDeleteProgram(_handle); }
+Shader::~Shader() { glDeleteProgram(handle); }
 
-void Shader::use() const { glUseProgram(_handle); }
+void Shader::use() const { glUseProgram(handle); }
 void Shader::set_bool(const char* name, GLboolean value) const {
-  glUniform1i(glGetUniformLocation(_handle, name), (int)value);
+  glUniform1i(glGetUniformLocation(handle, name), (int)value);
 }
 void Shader::set_int(const char* name, GLint value) const {
-  glUniform1i(glGetUniformLocation(_handle, name), value);
+  glUniform1i(glGetUniformLocation(handle, name), value);
 }
 void Shader::set_float(const char* name, GLfloat value) const {
-  glUniform1f(glGetUniformLocation(_handle, name), value);
+  glUniform1f(glGetUniformLocation(handle, name), value);
 }
 void Shader::set_vec2(const char* name, glm::vec2 vec) const {
-  glUniform2f(glGetUniformLocation(_handle, name), vec.x, vec.y);
+  glUniform2f(glGetUniformLocation(handle, name), vec.x, vec.y);
 }
 void Shader::set_ivec2(const char* name, glm::ivec2 vec) const {
-  glUniform2i(glGetUniformLocation(_handle, name), vec.x, vec.y);
+  glUniform2i(glGetUniformLocation(handle, name), vec.x, vec.y);
 }
 }  // namespace gfx

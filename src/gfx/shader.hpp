@@ -1,13 +1,11 @@
 #pragma once
 
-#include "../App.hpp"
-#include "../util/util.hpp"
-#include "gfx.hpp"
+#include "includes.hpp"
 
 namespace gfx {
 class Shader {
  public:
-  GLuint _handle;
+  GLuint handle;
 
   Shader();
   Shader(const char* vs_path, const char* fs_path);

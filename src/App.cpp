@@ -54,3 +54,21 @@ static void imgui_new_frame() {
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
 }
+
+static void imgui_end_frame(ImGuiIO& io) {
+  ImGui::Render();
+  ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+  ImGui::EndFrame();
+
+  if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+    GLFWwindow* backup_current_context = glfwGetCurrentContext();
+    ImGui::UpdatePlatformWindows();
+    ImGui::RenderPlatformWindowsDefault();
+    glfwMakeContextCurrent(backup_current_context);
+  }
+}
+
+app::App::App() {
+  mandelbrot_window = gfx::Window(glm::vec2(800, 800), "Mandelbrot Set");
+  julia_window = gfx::Window(glm::vec2(800, 800), "Julia Set");
+}
