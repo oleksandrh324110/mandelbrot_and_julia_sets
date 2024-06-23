@@ -7,6 +7,7 @@
 namespace gfx {
 class VBO {
  public:
+  VBO();
   VBO(GLint type, bool dynamic);
   ~VBO();
 

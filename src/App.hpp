@@ -1,15 +1,13 @@
 #pragma once
 
 #include "gfx/gfx.hpp"
-#include "gfx/shader.hpp"
-#include "gfx/vao.hpp"
-#include "gfx/vbo.hpp"
-#include "gfx/window.hpp"
 #include "util/util.hpp"
 
 namespace app {
 class App {
  public:
+  ImGuiIO& imgui_io;
+
   App();
   ~App();
 

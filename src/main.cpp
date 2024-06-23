@@ -23,13 +23,12 @@ int main(void) {
   GLuint EBO;
   glGenBuffers(1, &EBO);
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies,
-               GL_STATIC_DRAW);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
 
-  app::Shader shader("../res/shaders/main.vs", "../res/shaders/main.fs");
+  gfx::Shader shader("../res/shaders/main.vs", "../res/shaders/main.fs");
 
   int polygon_mode = GL_FILL;
   glm::ivec2 window_size;
@@ -52,8 +51,7 @@ int main(void) {
         ImGui::Text("Polygon mode:");
         ImGui::RadioButton("Line Mode (GL_LINE)", &polygon_mode, GL_LINE);
         ImGui::RadioButton("Fill Mode (GL_FILL)", &polygon_mode, GL_FILL);
-        glPolygonMode(GL_FRONT_AND_BACK,
-                      polygon_mode == GL_LINE ? GL_LINE : GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK, polygon_mode == GL_LINE ? GL_LINE : GL_FILL);
 
         ImGui::Text("Adjust Offset:");
         ImGui::SliderFloat("x offset", &offset.x, -3, 1);

@@ -15,6 +15,8 @@ static void _compile_and_check(GLuint s_id, const char* description) {
 }
 
 namespace gfx {
+Shader::Shader() {}
+
 Shader::Shader(const char* vs_path, const char* fs_path) {
   std::string vs_code, fs_code;
   std::ifstream vs_file, fs_file;
@@ -29,8 +31,7 @@ Shader::Shader(const char* vs_path, const char* fs_path) {
     vs_file.close();
     vs_code = vs_stream.str();
   } catch (std::ifstream::failure e) {
-    std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << vs_path
-              << std::endl;
+    std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << vs_path << std::endl;
   }
 
   try {
@@ -40,8 +41,7 @@ Shader::Shader(const char* vs_path, const char* fs_path) {
     fs_file.close();
     fs_code = fs_stream.str();
   } catch (std::ifstream::failure e) {
-    std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << fs_path
-              << std::endl;
+    std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << fs_path << std::endl;
   }
 
   GLuint vs_id = glCreateShader(GL_VERTEX_SHADER);
@@ -67,13 +67,14 @@ Shader::Shader(const char* vs_path, const char* fs_path) {
     char log_info[log_length];
     glGetProgramInfoLog(_handle, log_length, NULL, log_info);
 
-    std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
-              << log_info << std::endl;
+    std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << log_info << std::endl;
   }
 
   glDeleteShader(vs_id);
   glDeleteShader(fs_id);
 }
+
+Shader::~Shader() { glDeleteProgram(_handle); }
 
 void Shader::use() const { glUseProgram(_handle); }
 void Shader::set_bool(const char* name, GLboolean value) const {

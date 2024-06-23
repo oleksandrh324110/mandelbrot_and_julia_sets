@@ -1,10 +1,8 @@
 #include "vbo.hpp"
 
 namespace gfx {
-VBO::VBO(GLint type, bool dynamic) : _type(type), _dynamic(dynamic) {
-  glGenBuffers(1, &_handle);
-}
-
+VBO::VBO() {}
+VBO::VBO(GLint type, bool dynamic) : _type(type), _dynamic(dynamic) { glGenBuffers(1, &_handle); }
 VBO::~VBO() { glDeleteBuffers(1, &_handle); }
 
 void VBO::bind() const { glBindBuffer(_type, _handle); }

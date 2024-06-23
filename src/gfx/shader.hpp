@@ -9,7 +9,10 @@ class Shader {
  public:
   GLuint _handle;
 
+  Shader();
   Shader(const char* vs_path, const char* fs_path);
+  ~Shader();
+
   void use() const;
 
   void set_bool(const char* name, GLboolean value) const;
