@@ -68,7 +68,4 @@ static void imgui_end_frame(ImGuiIO& io) {
   }
 }
 
-app::App::App() {
-  mandelbrot_window = gfx::Window(glm::vec2(800, 800), "Mandelbrot Set");
-  julia_window = gfx::Window(glm::vec2(800, 800), "Julia Set");
-}
+app::App::App() {}

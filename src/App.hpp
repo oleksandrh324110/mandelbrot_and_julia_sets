@@ -1,6 +1,7 @@
 #pragma once
 
 #include "gfx/gfx.hpp"
+#include "gfx/includes.hpp"
 
 namespace app {
 class App {

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "includes.hpp"
-#include "shader.cpp"
-#include "vao.cpp"
-#include "vbo.cpp"
+#include "shader.hpp"
+#include "vao.hpp"
+#include "vbo.hpp"
 
 namespace gfx {
 struct Button {
