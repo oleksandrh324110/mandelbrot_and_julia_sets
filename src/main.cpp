@@ -1,6 +1,9 @@
 #include "App.hpp"
 
 int main(void) {
+  App app;
+  app.run();
+
   // GLuint VAO;
   // glGenVertexArrays(1, &VAO);
   // glBindVertexArray(VAO);
@@ -59,12 +62,5 @@ int main(void) {
   //     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
   //   }
   //   {}
-  //   glfwSwapBuffers(window);
   // }
-
-  // ImGui_ImplOpenGL3_Shutdown();
-  // ImGui_ImplGlfw_Shutdown();
-  // ImGui::DestroyContext();
-
-  // glfwTerminate();
 }

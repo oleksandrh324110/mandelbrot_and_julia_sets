@@ -15,8 +15,6 @@ static void _compile_and_check(GLuint s_id, const char* description) {
 }
 
 namespace gfx {
-Shader::Shader() {}
-
 Shader::Shader(const char* vs_path, const char* fs_path) {
   std::string vs_code, fs_code;
   std::ifstream vs_file, fs_file;
