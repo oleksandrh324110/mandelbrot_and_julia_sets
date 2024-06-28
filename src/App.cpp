@@ -1,8 +1,11 @@
 #include "App.hpp"
 
 App::App() {
+  gfx::glfw_init();
   mandelbrot_window = new gfx::Window({720, 480}, "Mandelbrot Set");
   julia_window = new gfx::Window({720, 480}, "Julia Set");
+  gfx::glad_init();
+  gfx::imgui_init(julia_window->handle);
 }
 
 App::~App() { cleanup(); }
@@ -13,30 +16,30 @@ void App::run() {
 }
 
 void App::init() {
-  gfx::imgui_init(julia_window->handle);
-
   GLfloat vertices[] = {-1, -1, 0, -1, 1, 0, 1, 1, 0, 1, -1, 0};
   GLuint indices[] = {0, 1, 2, 2, 3, 0};
 
   {
     gfx::Window& window = *(mandelbrot_window);
+    window.make_current();
     window.vao = new gfx::VAO();
     window.vbo = new gfx::VBO(GL_ARRAY_BUFFER, false);
-    window.vbo->buffer(vertices, 0, sizeof(vertices));
+    window.vbo->buffer(vertices, sizeof(vertices));
     window.ebo = new gfx::VBO(GL_ELEMENT_ARRAY_BUFFER, false);
-    window.ebo->buffer(indices, 0, sizeof(indices));
-    window.vao->attr(*window.vbo, 0, sizeof(vertices), GL_FLOAT, 3 * sizeof(float), 0);
+    window.ebo->buffer(indices, sizeof(indices));
+    window.vao->attr(*window.vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), 0);
     window.shader =
         new gfx::Shader("../res/shaders/mandelbrot_set.vs", "../res/shaders/mandelbrot_set.fs");
   }
   {
     gfx::Window& window = *(julia_window);
+    window.make_current();
     window.vao = new gfx::VAO();
     window.vbo = new gfx::VBO(GL_ARRAY_BUFFER, false);
-    window.vbo->buffer(vertices, 0, sizeof(vertices));
+    window.vbo->buffer(vertices, sizeof(vertices));
     window.ebo = new gfx::VBO(GL_ELEMENT_ARRAY_BUFFER, false);
-    window.ebo->buffer(indices, 0, sizeof(indices));
-    window.vao->attr(*window.vbo, 0, sizeof(vertices), GL_FLOAT, 3 * sizeof(float), 0);
+    window.ebo->buffer(indices, sizeof(indices));
+    window.vao->attr(*window.vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), 0);
     window.shader = new gfx::Shader("../res/shaders/julia_set.vs", "../res/shaders/julia_set.fs");
   }
 
@@ -54,6 +57,7 @@ void App::init() {
     mandelbrot_window->shader->use();
   };
   julia_window->update_callback = [&]() {
+    gfx::Window& window = *julia_window;
     static int polygon_mode = GL_FILL;
 
     ImGui::Begin("Julia Set");
@@ -67,13 +71,13 @@ void App::init() {
     julia_window->shader->use();
   };
   mandelbrot_window->render_callback = [&]() {
-    mandelbrot_window->clear({0.5f, 0.1f, 0.1f, 1.0f});
+    mandelbrot_window->clear({1, 0, 1, 1});
     mandelbrot_window->shader->use();
     glBindVertexArray(mandelbrot_window->vao->handle);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
   };
   julia_window->render_callback = [&]() {
-    julia_window->clear({0.5f, 0.1f, 0.1f, 1.0f});
+    julia_window->clear({1, 0, 1, 1});
     julia_window->shader->use();
     glBindVertexArray(julia_window->vao->handle);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -91,8 +95,11 @@ void App::main_loop() {
     julia_window->render();
 
     gfx::imgui_render();
+
     mandelbrot_window->swap();
     julia_window->swap();
+
+    glfwPollEvents();
   }
 }
 

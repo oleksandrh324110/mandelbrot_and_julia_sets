@@ -1,15 +1,12 @@
 #include "window.hpp"
 
 namespace gfx {
-Window::Window(glm::vec2 size, const char* title) {
-  glfw_init();
-  handle = glfwCreateWindow(size.x, size.y, title, NULL, NULL);
+Window::Window(glm::vec2 size, std::string title) {
+  handle = glfwCreateWindow(size.x, size.y, title.c_str(), NULL, NULL);
   if (!handle)
     throw std::runtime_error("Failed to create GLFW window");
   glfwMakeContextCurrent(handle);
   glfwSwapInterval(1);
-
-  glad_init();
 
   glfwSetWindowUserPointer(handle, this);
   glfwSetFramebufferSizeCallback(handle, [](GLFWwindow* window, int width, int height) {
@@ -47,7 +44,7 @@ Window::Window(glm::vec2 size, const char* title) {
     b.pressed = b.down && !b.last;
     b.last = b.down;
 
-    if (self.keyboard.keys[GLFW_KEY_Q].pressed)
+    if (self.keyboard.keys[GLFW_KEY_Q].down)
       self.set_should_close(true);
   });
 }
@@ -63,7 +60,6 @@ Window::~Window() {
 
 void Window::update() {
   make_current();
-  poll_events();
 
   time = glfwGetTime();
   delta_time = time - last_time;
@@ -88,8 +84,6 @@ void Window::clear(glm::vec4 color = {1, 1, 1, 1}) const {
   glClear(GL_COLOR_BUFFER_BIT);
 }
 void Window::swap() const { glfwSwapBuffers(handle); }
-void Window::poll_events() const { glfwPollEvents(); }
-void Window::wait_events() const { glfwWaitEvents(); }
 bool Window::should_close() const { return glfwWindowShouldClose(handle); }
 void Window::set_should_close(bool value) { glfwSetWindowShouldClose(handle, value); }
 }  // namespace gfx

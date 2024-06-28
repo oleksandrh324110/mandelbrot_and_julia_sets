@@ -13,6 +13,6 @@ class VBO {
   ~VBO();
 
   void bind() const;
-  void buffer(void* data, size_t offset, size_t count) const;
+  void buffer(void* data, size_t size) const;
 };
 }  // namespace gfx

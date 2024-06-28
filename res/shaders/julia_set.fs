@@ -57,5 +57,5 @@ void main() {
     if (i == MAX_ITER) color = vec3(0);
     else color = hueShift(color, float(i) / 10);
 
-    FragColor = vec4(color, 1);
+    FragColor = vec4(1, 1, 1, 1);
 }

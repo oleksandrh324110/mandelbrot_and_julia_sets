@@ -9,8 +9,8 @@ VBO::~VBO() { glDeleteBuffers(1, &handle); }
 
 void VBO::bind() const { glBindBuffer(type, handle); }
 
-void VBO::buffer(void* data, size_t offset, size_t count) const {
+void VBO::buffer(void* data, size_t size) const {
   bind();
-  glBufferData(type, count - offset, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+  glBufferData(type, size, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 }
 }  // namespace gfx
