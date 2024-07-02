@@ -3,7 +3,6 @@
 #include "../utils/utils.hpp"
 #include "vbo.hpp"
 
-namespace gfx {
 class VAO {
  public:
   GLuint handle;
@@ -14,4 +13,3 @@ class VAO {
   void bind() const;
   void attr(VBO& vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset) const;
 };
-};  // namespace gfx

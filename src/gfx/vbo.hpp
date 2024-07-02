@@ -2,7 +2,6 @@
 
 #include "../utils/utils.hpp"
 
-namespace gfx {
 class VBO {
  public:
   GLuint handle;
@@ -15,4 +14,3 @@ class VBO {
   void bind() const;
   void buffer(void* data, size_t size) const;
 };
-}  // namespace gfx

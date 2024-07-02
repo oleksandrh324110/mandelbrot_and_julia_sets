@@ -1,6 +1,6 @@
 #include "shader.hpp"
 
-static void _compile_and_check(GLuint s_id, const char* description) {
+static void _compile_and_check(GLuint s_id, std::string description) {
   GLint success;
   glCompileShader(s_id);
   glGetShaderiv(s_id, GL_COMPILE_STATUS, &success);
@@ -14,8 +14,7 @@ static void _compile_and_check(GLuint s_id, const char* description) {
   }
 }
 
-namespace gfx {
-Shader::Shader(const char* vs_path, const char* fs_path) {
+Shader::Shader(std::string vs_path, std::string fs_path) {
   std::string vs_code, fs_code;
   std::ifstream vs_file, fs_file;
 
@@ -75,19 +74,18 @@ Shader::Shader(const char* vs_path, const char* fs_path) {
 Shader::~Shader() { glDeleteProgram(handle); }
 
 void Shader::use() const { glUseProgram(handle); }
-void Shader::set_bool(const char* name, GLboolean value) const {
-  glUniform1i(glGetUniformLocation(handle, name), (int)value);
+void Shader::set_bool(std::string name, GLboolean value) const {
+  glUniform1i(glGetUniformLocation(handle, name.c_str()), (int)value);
 }
-void Shader::set_int(const char* name, GLint value) const {
-  glUniform1i(glGetUniformLocation(handle, name), value);
+void Shader::set_int(std::string name, GLint value) const {
+  glUniform1i(glGetUniformLocation(handle, name.c_str()), value);
 }
-void Shader::set_float(const char* name, GLfloat value) const {
-  glUniform1f(glGetUniformLocation(handle, name), value);
+void Shader::set_float(std::string name, GLfloat value) const {
+  glUniform1f(glGetUniformLocation(handle, name.c_str()), value);
 }
-void Shader::set_vec2(const char* name, glm::vec2 vec) const {
-  glUniform2f(glGetUniformLocation(handle, name), vec.x, vec.y);
+void Shader::set_vec2(std::string name, glm::vec2 vec) const {
+  glUniform2f(glGetUniformLocation(handle, name.c_str()), vec.x, vec.y);
 }
-void Shader::set_ivec2(const char* name, glm::ivec2 vec) const {
-  glUniform2i(glGetUniformLocation(handle, name), vec.x, vec.y);
+void Shader::set_ivec2(std::string name, glm::ivec2 vec) const {
+  glUniform2i(glGetUniformLocation(handle, name.c_str()), vec.x, vec.y);
 }
-}  // namespace gfx

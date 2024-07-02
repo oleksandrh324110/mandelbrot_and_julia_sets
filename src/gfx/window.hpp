@@ -5,8 +5,6 @@
 #include "vao.hpp"
 #include "vbo.hpp"
 
-namespace gfx {
-
 struct Button {
   bool down : 1 = false;
   bool last : 1 = false;
@@ -20,43 +18,36 @@ struct Keyboard {
 struct Mouse {
   Button buttons[GLFW_MOUSE_BUTTON_LAST];
 
-  glm::vec2 position;
+  glm::vec2 pos;
   glm::vec2 delta;
   glm::vec2 scroll;
-  float zoom;
+  glm::vec2 zoom;
 
-  glm::vec2 smooth_position;
+  glm::vec2 smooth_pos;
   glm::vec2 smooth_delta;
   glm::vec2 smooth_scroll;
-  float smooth_zoom;
+  glm::vec2 smooth_zoom;
 };
 
 class Window {
  public:
   GLFWwindow* handle;
   glm::vec2 size;
+  glm::vec2 pos;
   std::string title;
 
   Mouse mouse;
   Keyboard keyboard;
 
-  VAO* vao;
-  VBO* vbo;
-  VBO* ebo;
-  Shader* shader;
-
   double time;
   double last_time;
   double delta_time;
 
+  Window();
   Window(glm::vec2 size, std::string title);
   ~Window();
 
-  std::function<void()> update_callback;
-  std::function<void()> render_callback;
-
   void update();
-  void render() const;
 
   void make_current() const;
 
@@ -65,5 +56,11 @@ class Window {
 
   bool should_close() const;
   void set_should_close(bool value);
+
+ private:
+  static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+  static void cursor_pos_callback(GLFWwindow* window, double x, double y);
+  static void scroll_callback(GLFWwindow* window, double x, double y);
+  static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+  static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
 };
-}  // namespace gfx

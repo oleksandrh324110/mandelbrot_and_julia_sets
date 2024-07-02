@@ -1,7 +1,10 @@
 #pragma once
 
+#include <glad/gl.h>
+
 #include "utils.hpp"
 
-namespace gfx {
-void glad_init();
-}
+class glad {
+ public:
+  glad();
+};

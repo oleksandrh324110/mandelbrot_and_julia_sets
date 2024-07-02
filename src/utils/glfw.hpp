@@ -1,7 +1,11 @@
 #pragma once
 
+#include <GLFW/glfw3.h>
+
 #include "utils.hpp"
 
-namespace gfx {
-void glfw_init();
-}
+class glfw {
+ public:
+  glfw();
+  ~glfw();
+};

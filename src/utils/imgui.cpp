@@ -1,7 +1,6 @@
 #include "imgui.hpp"
 
-namespace gfx {
-void imgui_init(GLFWwindow* handle) {
+imgui::imgui() {
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO();
@@ -18,18 +17,26 @@ void imgui_init(GLFWwindow* handle) {
     style.WindowRounding = 0.0f;
     style.Colors[ImGuiCol_WindowBg].w = 1.0f;
   }
+}
 
+imgui::imgui(GLFWwindow* handle) {
   ImGui_ImplGlfw_InitForOpenGL(handle, true);
   ImGui_ImplOpenGL3_Init("#version 330");
 }
 
-void imgui_new_frame() {
+imgui::~imgui() {
+  ImGui_ImplOpenGL3_Shutdown();
+  ImGui_ImplGlfw_Shutdown();
+  ImGui::DestroyContext();
+}
+
+void imgui::new_frame() {
   ImGui_ImplOpenGL3_NewFrame();
   ImGui_ImplGlfw_NewFrame();
   ImGui::NewFrame();
 }
 
-void imgui_render() {
+void imgui::render() {
   ImGui::Render();
   ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
   ImGuiIO& io = ImGui::GetIO();
@@ -41,9 +48,3 @@ void imgui_render() {
     glfwMakeContextCurrent(backup_current_context);
   }
 }
-void imgui_shutdown() {
-  ImGui_ImplOpenGL3_Shutdown();
-  ImGui_ImplGlfw_Shutdown();
-  ImGui::DestroyContext();
-}
-}  // namespace gfx

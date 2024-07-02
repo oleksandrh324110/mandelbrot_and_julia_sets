@@ -1,7 +1,6 @@
 #include "glfw.hpp"
 
-namespace gfx {
-void glfw_init() {
+glfw::glfw() {
   glfwSetErrorCallback(
       [](int error, const char* description) { throw std::runtime_error(description); });
 
@@ -12,9 +11,9 @@ void glfw_init() {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
 #ifdef __APPLE__
   glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 }
-}  // namespace gfx
+
+glfw::~glfw() { glfwTerminate(); }
