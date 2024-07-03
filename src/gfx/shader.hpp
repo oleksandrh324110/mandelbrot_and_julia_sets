@@ -6,6 +6,7 @@ class Shader {
  public:
   GLuint handle;
 
+  Shader();
   Shader(std::string vs_path, std::string fs_path);
   ~Shader();
 

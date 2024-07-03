@@ -1,6 +1,6 @@
 #include "imgui.hpp"
 
-imgui::imgui() {
+imgui::imgui(GLFWwindow* handle) {
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO();
@@ -17,9 +17,6 @@ imgui::imgui() {
     style.WindowRounding = 0.0f;
     style.Colors[ImGuiCol_WindowBg].w = 1.0f;
   }
-}
-
-imgui::imgui(GLFWwindow* handle) {
   ImGui_ImplGlfw_InitForOpenGL(handle, true);
   ImGui_ImplOpenGL3_Init("#version 330");
 }

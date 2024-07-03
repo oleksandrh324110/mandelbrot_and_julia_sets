@@ -5,8 +5,11 @@
 
 class App {
  public:
-  Window mandelbrot_set;
-  Window julia_set;
+  glfw _glfw;
+  Window mandelbrot = Window({720, 480}, "Mandelbrot Set");
+  Window julia = Window({720, 480}, "Julia Set");
+  glad _glad;
+  imgui _imgui = imgui(mandelbrot.handle);
 
   App();
   ~App();
@@ -17,8 +20,4 @@ class App {
   void init();
   void main_loop();
   void cleanup();
-
-  glad _glad;
-  glfw _glfw;
-  imgui _imgui;
 };

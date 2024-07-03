@@ -2,8 +2,6 @@
 
 #include "../utils/utils.hpp"
 #include "shader.hpp"
-#include "vao.hpp"
-#include "vbo.hpp"
 
 struct Button {
   bool down : 1 = false;
@@ -33,7 +31,7 @@ class Window {
  public:
   GLFWwindow* handle;
   glm::vec2 size;
-  glm::vec2 pos;
+  glm::ivec2 pos;
   std::string title;
 
   Mouse mouse;
@@ -47,18 +45,33 @@ class Window {
   Window(glm::vec2 size, std::string title);
   ~Window();
 
+  GLuint VAO, VBO, EBO;
+  Shader shader;
+
+  std::function<void()> init_callback;
+  std::function<void()> update_callback;
+  std::function<void()> render_callback;
+  std::function<void()> cleanup_callback;
+
+  void init();
   void update();
+  void render();
+  void cleanup();
 
   void make_current() const;
 
-  void clear(glm::vec4 color) const;
-  void swap() const;
+  void clear(glm::vec4 color = {1, 1, 1, 1}) const;
+  void swap_buffers() const;
 
+  void focus() const;
+  bool is_on_focus() const;
   bool should_close() const;
   void set_should_close(bool value);
+  void set_pos(glm::vec2 pos);
 
  private:
   static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+  static void pos_callback(GLFWwindow* window, int x, int y);
   static void cursor_pos_callback(GLFWwindow* window, double x, double y);
   static void scroll_callback(GLFWwindow* window, double x, double y);
   static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);

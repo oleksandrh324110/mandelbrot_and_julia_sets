@@ -14,6 +14,8 @@ static void _compile_and_check(GLuint s_id, std::string description) {
   }
 }
 
+Shader::Shader() {}
+
 Shader::Shader(std::string vs_path, std::string fs_path) {
   std::string vs_code, fs_code;
   std::ifstream vs_file, fs_file;
