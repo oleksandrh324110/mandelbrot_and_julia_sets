@@ -24,13 +24,6 @@ Window::~Window() {
 
 void Window::init() {
   make_current();
-
-  if (!init_callback) {
-    std::stringstream ss;
-    ss << "No init callback set for " << title << '\n';
-    std::runtime_error(ss.str());
-  }
-
   init_callback();
 }
 
@@ -45,46 +38,23 @@ void Window::update() {
   mouse.smooth_delta = glm::mix(mouse.smooth_delta, mouse.delta, 0.1);
   mouse.smooth_scroll = glm::mix(mouse.smooth_scroll, mouse.scroll, 0.1);
 
-  if (!update_callback) {
-    std::stringstream ss;
-    ss << "No update callback set for " << title << '\n';
-    std::runtime_error(ss.str());
-  }
-
   update_callback();
 }
 
 void Window::render() {
   make_current();
-
-  if (!render_callback) {
-    std::stringstream ss;
-    ss << "No render callback set for " << title << '\n';
-    std::runtime_error(ss.str());
-  }
-
   render_callback();
-  swap_buffers();
-  glfwPollEvents();
 }
 
 void Window::cleanup() {
   make_current();
-
-  if (!cleanup_callback) {
-    std::stringstream ss;
-    ss << "No cleanup callback set for " << title << '\n';
-    std::runtime_error(ss.str());
-  }
-
   cleanup_callback();
 }
 
 void Window::make_current() const { glfwMakeContextCurrent(handle); }
 
-void Window::clear(glm::vec4 color) const {
-  float _color = math::map(mouse.pos.x, 0, size.x, 0, 1);
-  glClearColor(_color, _color, _color, _color);
+void Window::clear() const {
+  glClearColor(1, 0, 1, 1);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 void Window::swap_buffers() const { glfwSwapBuffers(handle); }

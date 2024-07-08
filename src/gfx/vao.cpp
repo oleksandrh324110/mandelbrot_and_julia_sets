@@ -6,8 +6,8 @@ VAO::VAO() {
 }
 VAO::~VAO() { glDeleteVertexArrays(1, &handle); }
 void VAO::bind() const { glBindVertexArray(handle); }
-void VAO::attr(VBO& vbo, GLuint index, GLint size, GLenum type, GLsizei stride,
-               size_t offset) const {
+void VAO::set_attrib(VBO& vbo, GLuint index, GLint size, GLenum type, GLsizei stride,
+                     size_t offset) const {
   bind();
   vbo.bind();
 

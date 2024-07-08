@@ -8,7 +8,6 @@
 
 class imgui {
  public:
-  imgui();
   imgui(GLFWwindow* handle);
   ~imgui();
 

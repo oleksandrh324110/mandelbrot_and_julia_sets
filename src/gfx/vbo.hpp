@@ -12,5 +12,5 @@ class VBO {
   ~VBO();
 
   void bind() const;
-  void buffer(void* data, size_t size) const;
+  void set_data(void* data, size_t size) const;
 };

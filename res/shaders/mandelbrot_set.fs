@@ -49,8 +49,8 @@ void main() {
 	vec2 z = vec2(0);
 	int i;
 	for (i = 0; i < MAX_ITER; i++) {
-			z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
-			if (length(z) > 16) break;
+    z = vec2(z.x * z.x - z.y * z.y, 2.0 * z.x * z.y) + c;
+    if (length(z) > 16) break;
 	}
 
 	vec3 color = vec3(0.2, 0.8, 1);

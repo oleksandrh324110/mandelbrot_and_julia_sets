@@ -8,7 +8,7 @@ VBO::~VBO() { glDeleteBuffers(1, &handle); }
 
 void VBO::bind() const { glBindBuffer(type, handle); }
 
-void VBO::buffer(void* data, size_t size) const {
+void VBO::set_data(void* data, size_t size) const {
   bind();
   glBufferData(type, size, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 }

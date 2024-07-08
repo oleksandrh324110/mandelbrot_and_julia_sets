@@ -60,7 +60,7 @@ class Window {
 
   void make_current() const;
 
-  void clear(glm::vec4 color = {1, 1, 1, 1}) const;
+  void clear() const;
   void swap_buffers() const;
 
   void focus() const;

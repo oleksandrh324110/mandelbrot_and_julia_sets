@@ -1,59 +1,38 @@
 #include "app.hpp"
 
+#include "julia/cleanup.cpp"
+#include "julia/init.cpp"
+#include "julia/render.cpp"
+#include "julia/update.cpp"
+#include "mandelbrot/cleanup.cpp"
+#include "mandelbrot/init.cpp"
+#include "mandelbrot/render.cpp"
+#include "mandelbrot/update.cpp"
+
 App::App() { init(); }
 void App::run() { main_loop(); }
 void App::init() {
-  mandelbrot.init_callback = [this]() {
-    mandelbrot.set_pos({200, 300});
+  float vertices[] = {-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0};
+  unsigned int indices[] = {0, 1, 2, 2, 3, 0};
 
-    float vertices[] = {-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0};
-    float indices[] = {0, 1, 3, 1, 2, 3};
+  vao.bind();
+  vbo.bind();
+  vbo.set_data(vertices, sizeof(vertices));
 
-    glGenVertexArrays(1, &mandelbrot.VAO);
-    glGenBuffers(1, &mandelbrot.VBO);
-    glGenBuffers(1, &mandelbrot.EBO);
+  ebo.bind();
+  ebo.set_data(indices, sizeof(indices));
 
-    glBindVertexArray(mandelbrot.VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, mandelbrot.VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  vao.set_attrib(vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), 0);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mandelbrot.EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  mandelbrot.init_callback = [this]() { mandelbrot_init_callback(*this); };
+  mandelbrot.update_callback = [this]() { mandelbrot_update_callback(*this); };
+  mandelbrot.render_callback = [this]() { mandelbrot_render_callback(*this); };
+  mandelbrot.cleanup_callback = [this]() { mandelbrot_cleanup_callback(*this); };
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    mandelbrot.shader =
-        Shader("../res/shaders/mandelbrot_set.vs", "../res/shaders/mandelbrot_set.fs");
-  };
-  mandelbrot.update_callback = [this]() {};
-  mandelbrot.render_callback = [this]() {};
-  mandelbrot.cleanup_callback = [this]() {};
-
-  julia.init_callback = [this]() {
-    julia.set_pos({1000, 300});
-    float vertices[] = {-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0};
-    float indices[] = {0, 1, 3, 1, 2, 3};
-
-    glGenVertexArrays(1, &julia.VAO);
-    glGenBuffers(1, &julia.VBO);
-    glGenBuffers(1, &julia.EBO);
-
-    glBindVertexArray(julia.VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, julia.VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, julia.EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    julia.shader = Shader("../res/shaders/julia_set.vs", "../res/shaders/julia_set.fs");
-  };
-  julia.update_callback = [this]() {};
-  julia.render_callback = [this]() {};
-  julia.cleanup_callback = [this]() {};
+  julia.init_callback = [this]() { julia_init_callback(*this); };
+  julia.update_callback = [this]() { julia_update_callback(*this); };
+  julia.render_callback = [this]() { julia_render_callback(*this); };
+  julia.cleanup_callback = [this]() { julia_cleanup_callback(*this); };
 
   mandelbrot.init();
   julia.init();
@@ -69,7 +48,14 @@ void App::main_loop() {
     julia.render();
 
     _imgui.render();
+
+    glfwSwapBuffers(mandelbrot.handle);
+    glfwSwapBuffers(julia.handle);
+    glfwPollEvents();
   }
 }
-void App::cleanup() {}
+void App::cleanup() {
+  mandelbrot.cleanup();
+  julia.cleanup();
+}
 App::~App() { cleanup(); }
