@@ -4,6 +4,6 @@ void mandelbrot_update_callback(App& app) {
   auto& window = app.mandelbrot;
 
   ImGui::Begin("Mandelbrot Set");
-  ImGui::SliderFloat("Color", &window.color, 0.0f, 1.0f);
+  ImGui::ColorEdit4("Clear Color", &window.clear_color[0]);
   ImGui::End();
 }

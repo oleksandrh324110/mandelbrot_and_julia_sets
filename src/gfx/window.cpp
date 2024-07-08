@@ -62,8 +62,8 @@ void Window::cleanup() {
 
 void Window::make_current() const { glfwMakeContextCurrent(handle); }
 
-void Window::clear(glm::vec4 color) const {
-  glClearColor(color.x, color.y, color.z, color.w);
+void Window::clear(glm::vec4 clear_color) const {
+  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 void Window::swap_buffers() const { glfwSwapBuffers(handle); }

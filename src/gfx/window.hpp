@@ -50,7 +50,7 @@ class Window {
   VBO* ebo;
   Shader* shader;
 
-  float color = 0.5;
+  glm::vec4 clear_color = {1, 0, 1, 1};
 
   std::function<void()> init_callback;
   std::function<void()> update_callback;
@@ -64,7 +64,7 @@ class Window {
 
   void make_current() const;
 
-  void clear(glm::vec4 color = {1, 0, 1, 0}) const;
+  void clear(glm::vec4 clear_color) const;
   void swap_buffers() const;
 
   void focus() const;
