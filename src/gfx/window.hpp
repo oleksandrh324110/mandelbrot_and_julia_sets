@@ -2,6 +2,7 @@
 
 #include "../utils/utils.hpp"
 #include "shader.hpp"
+#include "vao.hpp"
 
 struct Button {
   bool down : 1 = false;
@@ -41,12 +42,15 @@ class Window {
   double last_time;
   double delta_time;
 
-  Window();
-  Window(glm::vec2 size, std::string title);
+  Window(glm::vec2 size, std::string title, GLFWwindow* share = nullptr);
   ~Window();
 
-  GLuint VAO, VBO, EBO;
-  Shader shader;
+  VAO* vao;
+  VBO* vbo;
+  VBO* ebo;
+  Shader* shader;
+
+  float color = 0.5;
 
   std::function<void()> init_callback;
   std::function<void()> update_callback;
@@ -60,7 +64,7 @@ class Window {
 
   void make_current() const;
 
-  void clear() const;
+  void clear(glm::vec4 color = {1, 0, 1, 0}) const;
   void swap_buffers() const;
 
   void focus() const;

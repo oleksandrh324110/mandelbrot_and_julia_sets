@@ -73,15 +73,9 @@ Shader::Shader(std::string vs_path, std::string fs_path) {
   glDeleteShader(fs_id);
 }
 
-Shader::~Shader() {
-  // glDeleteProgram(handle);
-}
+Shader::~Shader() { glDeleteProgram(handle); }
 
-void Shader::use() const {
-  glUseProgram(handle);
-  if (glGetError() == GL_INVALID_VALUE)
-    throw std::runtime_error("Error: Invalid value in Shader::use()");
-}
+void Shader::use() const { glUseProgram(handle); }
 void Shader::set_bool(std::string name, GLboolean value) const {
   glUniform1i(glGetUniformLocation(handle, name.c_str()), (int)value);
 }

@@ -1,6 +1,8 @@
 #include "imgui.hpp"
 
 imgui::imgui(GLFWwindow* handle) {
+  glfwMakeContextCurrent(handle);
+
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO();

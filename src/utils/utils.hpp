@@ -8,7 +8,8 @@
 #include <sstream>
 #include <string>
 
-#include "glad.hpp"
+// clang-format off
 #include "glfw.hpp"
+#include "glad.hpp"
 #include "imgui.hpp"
 #include "math.hpp"

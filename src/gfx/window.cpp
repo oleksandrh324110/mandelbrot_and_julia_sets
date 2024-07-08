@@ -1,8 +1,7 @@
 #include "window.hpp"
 
-Window::Window() {}
-Window::Window(glm::vec2 size, std::string title) : size(size), title(title) {
-  handle = glfwCreateWindow(size.x, size.y, title.c_str(), NULL, NULL);
+Window::Window(glm::vec2 size, std::string title, GLFWwindow* share) : size(size), title(title) {
+  handle = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, share);
   if (!handle)
     throw std::runtime_error("Failed to create GLFW window");
   glfwMakeContextCurrent(handle);
@@ -48,13 +47,23 @@ void Window::render() {
 
 void Window::cleanup() {
   make_current();
+
+  delete vao;
+  delete vbo;
+  delete ebo;
+  delete shader;
+  vao = nullptr;
+  vbo = nullptr;
+  ebo = nullptr;
+  shader = nullptr;
+
   cleanup_callback();
 }
 
 void Window::make_current() const { glfwMakeContextCurrent(handle); }
 
-void Window::clear() const {
-  glClearColor(1, 0, 1, 1);
+void Window::clear(glm::vec4 color) const {
+  glClearColor(color.x, color.y, color.z, color.w);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 void Window::swap_buffers() const { glfwSwapBuffers(handle); }

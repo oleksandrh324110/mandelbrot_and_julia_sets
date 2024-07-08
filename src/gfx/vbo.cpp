@@ -4,7 +4,10 @@ VBO::VBO(GLint type, bool dynamic) : type(type), dynamic(dynamic) {
   glGenBuffers(1, &handle);
   bind();
 }
-VBO::~VBO() { glDeleteBuffers(1, &handle); }
+// clang-format off
+VBO::~VBO() { 
+  glDeleteBuffers(1, &handle); 
+}
 
 void VBO::bind() const { glBindBuffer(type, handle); }
 
