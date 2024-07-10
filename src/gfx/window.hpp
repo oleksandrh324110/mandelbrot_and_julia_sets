@@ -45,7 +45,7 @@ class Window {
   VBO* ebo;
   Shader* shader;
 
-  glm::vec2 central_point = glm::vec2(0);
+  glm::vec2 central_point = glm::vec2(0, 0);
 
   std::function<void()> init_callback;
   std::function<void()> update_callback;

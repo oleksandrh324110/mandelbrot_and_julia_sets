@@ -11,6 +11,8 @@ class App {
   glad _glad;
   imgui _imgui = imgui(mandelbrot.handle);
 
+  float pow = 2;
+
   App();
   ~App();
 

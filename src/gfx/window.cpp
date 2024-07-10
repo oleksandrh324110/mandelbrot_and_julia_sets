@@ -77,15 +77,11 @@ bool Window::is_on_focus() const { return glfwGetWindowAttrib(handle, GLFW_FOCUS
 void Window::set_should_close(bool value) { glfwSetWindowShouldClose(handle, value); }
 
 void Window::set_pos(int x, int y) {
-  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
-    return;
   glfwSetWindowPos(handle, x, y);
   this->pos = {x, y};
 }
 
 void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
-    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
   self.size = {width, height};
   self.make_current();
@@ -93,29 +89,23 @@ void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height
 }
 
 void Window::pos_callback(GLFWwindow* window, int x, int y) {
-  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
-    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
   self.pos = {x, y};
 }
 
 void Window::cursor_pos_callback(GLFWwindow* window, double x, double y) {
-  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
+  if (ImGui::IsAnyItemActive())
     return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
   self.mouse.pos = {x, y};
 }
 
 void Window::scroll_callback(GLFWwindow* window, double x, double y) {
-  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
-    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
   self.mouse.zoom += glm::vec2(x, y);
 }
 
 void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
-    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
   Button& b = self.mouse.buttons[button];
   b.down = action != GLFW_RELEASE;
@@ -124,8 +114,6 @@ void Window::mouse_button_callback(GLFWwindow* window, int button, int action, i
 }
 
 void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
-    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
   Button& b = self.keyboard.keys[key];
   b.down = action != GLFW_RELEASE;
