@@ -5,9 +5,9 @@
 To clone the repository with all submodules, use:
 
 ```bash
-git clone git@github.com:oleksandrh324110/opengl-learn.git --recursive
+git clone git@github.com:oleksandrh324110/opengl-learn.git --recursive && cd opengl-learn
 # or
-git clone https://github.com/oleksandrh324110/opengl-learn.git --recursive
+git clone https://github.com/oleksandrh324110/opengl-learn.git --recursive && cd opengl-learn
 ```
 
 If you forgot to use `--recursive`, you can initialize and update the submodules later:
