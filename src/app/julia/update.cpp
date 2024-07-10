@@ -10,7 +10,7 @@ void julia_update_callback(App& app) {
   static float hue_shift = 0.5;
   static float zoom = 1;
   static float smooth_zoom = 1;
-  static int max_iterations = 256;
+  static int max_iterations = 128;
 
   if (window.mouse.buttons[GLFW_MOUSE_BUTTON_LEFT].down)
     window.central_point -=
