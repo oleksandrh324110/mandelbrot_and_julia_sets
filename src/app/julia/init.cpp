@@ -3,6 +3,8 @@
 void julia_init_callback(App& app) {
   auto& window = app.julia;
 
+  window.set_pos(1000, 350);
+
   float vertices[] = {-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0};
   unsigned int indices[] = {0, 1, 2, 2, 3, 0};
 

@@ -31,13 +31,14 @@ void Window::update() {
 
   time = glfwGetTime();
   delta_time = time - last_time;
-  last_time = time;
 
-  mouse.smooth_pos = glm::mix(mouse.smooth_pos, mouse.pos, 0.1);
-  mouse.smooth_delta = glm::mix(mouse.smooth_delta, mouse.delta, 0.1);
-  mouse.smooth_scroll = glm::mix(mouse.smooth_scroll, mouse.scroll, 0.1);
+  mouse.delta = mouse.pos - mouse.last_pos;
 
   update_callback();
+
+  mouse.last_pos = mouse.pos;
+  last_time = time;
+  mouse.zoom = glm::vec2(0);
 }
 
 void Window::render() {
@@ -62,8 +63,8 @@ void Window::cleanup() {
 
 void Window::make_current() const { glfwMakeContextCurrent(handle); }
 
-void Window::clear(glm::vec4 clear_color) const {
-  glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+void Window::clear() const {
+  glClearColor(1, 0, 1, 1);
   glClear(GL_COLOR_BUFFER_BIT);
 }
 void Window::swap_buffers() const { glfwSwapBuffers(handle); }
@@ -75,38 +76,46 @@ void Window::focus() const {
 bool Window::is_on_focus() const { return glfwGetWindowAttrib(handle, GLFW_FOCUSED); }
 void Window::set_should_close(bool value) { glfwSetWindowShouldClose(handle, value); }
 
-void Window::set_pos(glm::vec2 pos) {
-  glfwSetWindowPos(handle, pos.x, pos.y);
-  this->pos = pos;
+void Window::set_pos(int x, int y) {
+  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
+    return;
+  glfwSetWindowPos(handle, x, y);
+  this->pos = {x, y};
 }
 
 void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
+    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
-  self.make_current();
   self.size = {width, height};
+  self.make_current();
   glViewport(0, 0, width, height);
 }
 
 void Window::pos_callback(GLFWwindow* window, int x, int y) {
+  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
+    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
   self.pos = {x, y};
 }
 
 void Window::cursor_pos_callback(GLFWwindow* window, double x, double y) {
+  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
+    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
-  self.mouse.delta = glm::vec2(x, y) - self.mouse.pos;
   self.mouse.pos = {x, y};
 }
 
 void Window::scroll_callback(GLFWwindow* window, double x, double y) {
+  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
+    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
-  if (self.keyboard.keys[GLFW_KEY_LEFT_SHIFT].down)
-    self.mouse.scroll = {y, x};
-  else
-    self.mouse.scroll = {x, y};
+  self.mouse.zoom += glm::vec2(x, y);
 }
 
 void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
+  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
+    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
   Button& b = self.mouse.buttons[button];
   b.down = action != GLFW_RELEASE;
@@ -115,12 +124,11 @@ void Window::mouse_button_callback(GLFWwindow* window, int button, int action, i
 }
 
 void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+  if (ImGui::IsAnyItemActive() || ImGui::IsAnyItemFocused() || ImGui::IsAnyItemHovered())
+    return;
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
   Button& b = self.keyboard.keys[key];
   b.down = action != GLFW_RELEASE;
   b.pressed = b.down && !b.last;
   b.last = b.down;
-
-  if (self.keyboard.keys[GLFW_KEY_Q].down)
-    self.set_should_close(true);
 }

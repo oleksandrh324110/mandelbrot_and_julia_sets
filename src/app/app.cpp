@@ -21,6 +21,9 @@ void App::init() {
 }
 void App::main_loop() {
   while (!mandelbrot.should_close() && !julia.should_close()) {
+    if (mandelbrot.keyboard.keys[GLFW_KEY_Q].down || julia.keyboard.keys[GLFW_KEY_Q].down)
+      mandelbrot.set_should_close(true);
+
     _imgui.new_frame();
 
     mandelbrot.update();

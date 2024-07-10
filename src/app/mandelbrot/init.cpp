@@ -3,6 +3,8 @@
 void mandelbrot_init_callback(App& app) {
   auto& window = app.mandelbrot;
 
+  window.set_pos(200, 350);
+
   float vertices[] = {-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0};
   unsigned int indices[] = {0, 1, 2, 2, 3, 0};
 

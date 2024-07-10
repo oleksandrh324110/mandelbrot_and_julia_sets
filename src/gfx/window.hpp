@@ -18,14 +18,9 @@ struct Mouse {
   Button buttons[GLFW_MOUSE_BUTTON_LAST];
 
   glm::vec2 pos;
+  glm::vec2 last_pos;
   glm::vec2 delta;
-  glm::vec2 scroll;
   glm::vec2 zoom;
-
-  glm::vec2 smooth_pos;
-  glm::vec2 smooth_delta;
-  glm::vec2 smooth_scroll;
-  glm::vec2 smooth_zoom;
 };
 
 class Window {
@@ -50,7 +45,7 @@ class Window {
   VBO* ebo;
   Shader* shader;
 
-  glm::vec4 clear_color = {1, 0, 1, 1};
+  glm::vec2 central_point = glm::vec2(0);
 
   std::function<void()> init_callback;
   std::function<void()> update_callback;
@@ -64,14 +59,14 @@ class Window {
 
   void make_current() const;
 
-  void clear(glm::vec4 clear_color) const;
+  void clear() const;
   void swap_buffers() const;
 
   void focus() const;
   bool is_on_focus() const;
   bool should_close() const;
   void set_should_close(bool value);
-  void set_pos(glm::vec2 pos);
+  void set_pos(int x, int y);
 
  private:
   static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
