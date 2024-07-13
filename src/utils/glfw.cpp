@@ -1,6 +1,10 @@
 #include "glfw.hpp"
 
 glfw::glfw() {
+  setenv("__NV_PRIME_RENDER_OFFLOAD", "1", 1);
+  setenv("__GLX_VENDOR_LIBRARY_NAME", "nvidia", 1);
+  setenv("DRI_PRIME", "1", 1);
+
   glfwSetErrorCallback(
       [](int error, const char* description) { throw std::runtime_error(description); });
 

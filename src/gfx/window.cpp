@@ -112,7 +112,6 @@ void Window::cursor_pos_callback(GLFWwindow* window, double x, double y) {
 
 void Window::scroll_callback(GLFWwindow* window, double x, double y) {
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
-  std::cout << x << " " << y << std::endl;
   self.mouse.zoom += glm::vec2(x, y);
 }
 
