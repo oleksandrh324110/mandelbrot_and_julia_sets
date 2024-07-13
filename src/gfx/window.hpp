@@ -37,6 +37,7 @@ class Window {
   double last_time;
   double delta_time;
 
+
   Window(glm::vec2 size, std::string title, GLFWwindow* share = nullptr);
   ~Window();
 

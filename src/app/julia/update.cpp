@@ -8,6 +8,7 @@ void julia_update_callback(App& app) {
   static glm::vec2 top_left = glm::vec2(-1, 1);
   static glm::vec2 bottom_right = glm::vec2(1, -1);
   static float hue_shift = 0.5;
+  static bool hue_shift_animate = false;
   static float zoom = 1;
   static float smooth_zoom = 1;
   static int max_iterations = 128;
@@ -23,8 +24,13 @@ void julia_update_callback(App& app) {
 
   zoom = std::max(0.1f, zoom);
   max_iterations = std::max(1, max_iterations);
-
   smooth_zoom = glm::mix(smooth_zoom, zoom, window.delta_time * 10);
+
+  if (hue_shift_animate) {
+    hue_shift += window.delta_time / 5;
+    if (hue_shift > 1)
+      hue_shift = 0;
+  }
 
   float width = (bottom_right.x - top_left.x) / smooth_zoom;
   float height = (top_left.y - bottom_right.y) / smooth_zoom;
@@ -42,11 +48,10 @@ void julia_update_callback(App& app) {
   window.shader->set_uniform("c", app.mandelbrot.central_point);
 
   ImGui::Begin("julia Set");
-  ImGui::Text("Central point: (%f, %f)", window.central_point.x, window.central_point.y);
-  ImGui::InputInt("Max Iterations", &max_iterations, 1, 10);
+  ImGui::Text("FPS: %f", 1 / window.delta_time);
+  ImGui::SliderInt("Max Iterations", &max_iterations, 1, 1024);
   ImGui::SliderFloat("Pow", &app.pow, 1, 10);
   ImGui::SliderFloat("Hue shift", &hue_shift, 0, 1);
-  if (ImGui::Button("Exit"))
-    window.set_should_close(true);
+  ImGui::Checkbox("Animate hue shift", &hue_shift_animate);
   ImGui::End();
 }
