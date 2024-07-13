@@ -78,7 +78,7 @@ void Window::focus() const {
   glfwFocusWindow(handle);
   glfwSetWindowAttrib(handle, GLFW_FOCUSED, true);
 }
-bool Window::is_on_focus() const { return glfwGetWindowAttrib(handle, GLFW_FOCUSED); }
+bool Window::is_focused() const { return glfwGetWindowAttrib(handle, GLFW_FOCUSED); }
 void Window::set_should_close(bool value) { glfwSetWindowShouldClose(handle, value); }
 
 void Window::set_pos(int x, int y) {

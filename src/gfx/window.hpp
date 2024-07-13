@@ -64,7 +64,7 @@ class Window {
   void swap_buffers() const;
 
   void focus() const;
-  bool is_on_focus() const;
+  bool is_focused() const;
   bool should_close() const;
   void set_should_close(bool value);
   void set_pos(int x, int y);
