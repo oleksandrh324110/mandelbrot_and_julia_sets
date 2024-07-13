@@ -8,12 +8,17 @@ Window::Window(glm::vec2 size, std::string title, GLFWwindow* share) : size(size
   glfwSwapInterval(1);
 
   glfwSetWindowUserPointer(handle, this);
+  glfwSetWindowSizeCallback(handle, window_size_callback);
   glfwSetFramebufferSizeCallback(handle, framebuffer_size_callback);
   glfwSetWindowPosCallback(handle, pos_callback);
   glfwSetCursorPosCallback(handle, cursor_pos_callback);
   glfwSetScrollCallback(handle, scroll_callback);
   glfwSetMouseButtonCallback(handle, mouse_button_callback);
   glfwSetKeyCallback(handle, key_callback);
+
+  int framebufferWidth, framebufferHeight;
+  glfwGetFramebufferSize(handle, &framebufferWidth, &framebufferHeight);
+  framebuffer_size = glm::vec2(framebufferWidth, framebufferHeight);
 }
 
 Window::~Window() {
@@ -83,9 +88,14 @@ void Window::set_pos(int x, int y) {
 
 void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
-  self.size = {width, height};
+  self.framebuffer_size = {width, height};
   self.make_current();
   glViewport(0, 0, width, height);
+}
+
+void Window::window_size_callback(GLFWwindow* window, int width, int height) {
+  Window& self = *(Window*)glfwGetWindowUserPointer(window);
+  self.size = {width, height};
 }
 
 void Window::pos_callback(GLFWwindow* window, int x, int y) {
@@ -102,6 +112,7 @@ void Window::cursor_pos_callback(GLFWwindow* window, double x, double y) {
 
 void Window::scroll_callback(GLFWwindow* window, double x, double y) {
   Window& self = *(Window*)glfwGetWindowUserPointer(window);
+  std::cout << x << " " << y << std::endl;
   self.mouse.zoom += glm::vec2(x, y);
 }
 

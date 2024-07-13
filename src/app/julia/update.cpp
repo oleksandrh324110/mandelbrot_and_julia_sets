@@ -17,9 +17,9 @@ void julia_update_callback(App& app) {
     window.central_point -=
         glm::vec2(window.mouse.delta.x * aspect, window.mouse.delta.y) * 2.f / window.size / zoom;
 
-  if (window.mouse.zoom.y == 1)
+  if (window.mouse.zoom.y > 0)
     zoom *= 1.5;
-  else if (window.mouse.zoom.y == -1)
+  else if (window.mouse.zoom.y < 0)
     zoom /= 1.5;
 
   zoom = std::max(0.1f, zoom);
@@ -39,7 +39,7 @@ void julia_update_callback(App& app) {
   glm::vec2 new_bottom_right = window.central_point + glm::vec2(width / 2 * aspect, -height / 2);
 
   window.shader->use();
-  window.shader->set_uniform("resolution", window.size);
+  window.shader->set_uniform("framebuffer_size", window.framebuffer_size);
   window.shader->set_uniform("top_left", new_top_left);
   window.shader->set_uniform("bottom_right", new_bottom_right);
   window.shader->set_uniform("hue_shift", hue_shift);

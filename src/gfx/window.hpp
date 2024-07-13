@@ -27,6 +27,7 @@ class Window {
  public:
   GLFWwindow* handle;
   glm::vec2 size;
+  glm::vec2 framebuffer_size;
   glm::ivec2 pos;
   std::string title;
 
@@ -36,7 +37,6 @@ class Window {
   double time;
   double last_time;
   double delta_time;
-
 
   Window(glm::vec2 size, std::string title, GLFWwindow* share = nullptr);
   ~Window();
@@ -71,6 +71,7 @@ class Window {
 
  private:
   static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+  static void window_size_callback(GLFWwindow* window, int width, int height);
   static void pos_callback(GLFWwindow* window, int x, int y);
   static void cursor_pos_callback(GLFWwindow* window, double x, double y);
   static void scroll_callback(GLFWwindow* window, double x, double y);
