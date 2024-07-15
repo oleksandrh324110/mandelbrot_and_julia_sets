@@ -66,7 +66,8 @@ Shader::Shader(std::string_view vs_path, std::string_view fs_path) {
     char log_info[log_length];
     glGetProgramInfoLog(handle, log_length, NULL, log_info);
 
-    std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << log_info << std::endl;
+    std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
+              << log_info << std::endl;
   }
 
   glDeleteShader(vs_id);
@@ -76,30 +77,13 @@ Shader::Shader(std::string_view vs_path, std::string_view fs_path) {
 Shader::~Shader() { glDeleteProgram(handle); }
 
 void Shader::use() const { glUseProgram(handle); }
-void Shader::set_uniform(std::string_view name, GLboolean value) const {
-  glUniform1i(glGetUniformLocation(handle, name.data()), (int)value);
-}
-void Shader::set_uniform(std::string_view name, GLint value) const {
-  glUniform1i(glGetUniformLocation(handle, name.data()), value);
-}
-void Shader::set_uniform(std::string_view name, GLfloat value) const {
-  glUniform1f(glGetUniformLocation(handle, name.data()), value);
-}
-void Shader::set_uniform(std::string_view name, glm::vec2 vec) const {
-  glUniform2f(glGetUniformLocation(handle, name.data()), vec.x, vec.y);
-}
-void Shader::set_uniform(std::string_view name, glm::ivec2 vec) const {
-  glUniform2i(glGetUniformLocation(handle, name.data()), vec.x, vec.y);
-}
-void Shader::set_uniform(std::string_view name, glm::vec3 vec) const {
-  glUniform3f(glGetUniformLocation(handle, name.data()), vec.x, vec.y, vec.z);
-}
-void Shader::set_uniform(std::string_view name, glm::ivec3 vec) const {
-  glUniform3i(glGetUniformLocation(handle, name.data()), vec.x, vec.y, vec.z);
-}
-void Shader::set_uniform(std::string_view name, glm::vec4 vec) const {
-  glUniform4f(glGetUniformLocation(handle, name.data()), vec.x, vec.y, vec.z, vec.w);
-}
-void Shader::set_uniform(std::string_view name, glm::ivec4 vec) const {
-  glUniform4i(glGetUniformLocation(handle, name.data()), vec.x, vec.y, vec.z, vec.w);
-}
+
+void Shader::set_uniform(std::string_view name, GLboolean value) const { glUniform1i(glGetUniformLocation(handle, name.data()), (int)value); }
+void Shader::set_uniform(std::string_view name, GLint value) const { glUniform1i(glGetUniformLocation(handle, name.data()), value); }
+void Shader::set_uniform(std::string_view name, GLfloat value) const { glUniform1f(glGetUniformLocation(handle, name.data()), value); }
+void Shader::set_uniform(std::string_view name, glm::vec2 vec) const { glUniform2f(glGetUniformLocation(handle, name.data()), vec.x, vec.y); }
+void Shader::set_uniform(std::string_view name, glm::ivec2 vec) const { glUniform2i(glGetUniformLocation(handle, name.data()), vec.x, vec.y); }
+void Shader::set_uniform(std::string_view name, glm::vec3 vec) const { glUniform3f(glGetUniformLocation(handle, name.data()), vec.x, vec.y, vec.z); }
+void Shader::set_uniform(std::string_view name, glm::ivec3 vec) const { glUniform3i(glGetUniformLocation(handle, name.data()), vec.x, vec.y, vec.z); }
+void Shader::set_uniform(std::string_view name, glm::vec4 vec) const { glUniform4f(glGetUniformLocation(handle, name.data()), vec.x, vec.y, vec.z, vec.w); }
+void Shader::set_uniform(std::string_view name, glm::ivec4 vec) const { glUniform4i(glGetUniformLocation(handle, name.data()), vec.x, vec.y, vec.z, vec.w); }

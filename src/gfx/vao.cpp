@@ -4,14 +4,11 @@ VAO::VAO() {
   glGenVertexArrays(1, &handle);
   bind();
 }
-// clang-format off
-VAO::~VAO() { 
-  glDeleteVertexArrays(1, &handle); 
+VAO::~VAO() {
+  glDeleteVertexArrays(1, &handle);
 }
-// clang-format on
 void VAO::bind() const { glBindVertexArray(handle); }
-void VAO::set_attrib(VBO& vbo, GLuint index, GLint size, GLenum type, GLsizei stride,
-                     size_t offset) const {
+void VAO::set_attrib(VBO& vbo, GLuint index, GLint size, GLenum type, GLsizei stride, size_t offset) const {
   bind();
   vbo.bind();
 

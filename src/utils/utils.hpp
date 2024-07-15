@@ -9,8 +9,7 @@
 #include <string>
 #include <string_view>
 
-// clang-format off
-#include "glfw.hpp"
 #include "glad.hpp"
+#include "glfw.hpp"
 #include "imgui.hpp"
 #include "math.hpp"

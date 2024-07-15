@@ -14,8 +14,7 @@ void julia_update_callback(App& app) {
   static int max_iterations = 128;
 
   if (window.mouse.buttons[GLFW_MOUSE_BUTTON_LEFT].down)
-    window.central_point -=
-        glm::vec2(window.mouse.delta.x * aspect, window.mouse.delta.y) * 2.f / window.size / zoom;
+    window.central_point -= glm::vec2(window.mouse.delta.x * aspect, window.mouse.delta.y) * 2.f / window.size / zoom;
 
   if (window.mouse.zoom.y > 0)
     zoom *= 1.5;

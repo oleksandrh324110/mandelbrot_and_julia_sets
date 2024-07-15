@@ -1,5 +1,7 @@
 # Mandelbrot and Julia Sets
 
+![Screenshot of the project](screenshots/1.png)
+
 ## Cloning the Repository
 
 To clone the repository with all submodules, use:
