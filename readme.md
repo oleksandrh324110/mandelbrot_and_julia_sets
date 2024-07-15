@@ -32,16 +32,14 @@ To build and run the project, follow these steps:
 2. Generate the build files using CMake:
 
    ```bash
-   cmake ..
+   cmake .. -G Ninja
    ```
 
-3. Compile the project using `make`:
+3. Compile the project using `ninja`:
 
    ```bash
-   make -j12
+   ninja
    ```
-
-   `-j12` is used to compile the project on more than one core
 
 4. Run the executable:
 
