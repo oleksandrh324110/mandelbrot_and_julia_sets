@@ -72,7 +72,10 @@ void Window::clear() const {
   glClearColor(1, 0, 1, 1);
   glClear(GL_COLOR_BUFFER_BIT);
 }
-void Window::swap_buffers() const { glfwSwapBuffers(handle); }
+void Window::swap_buffers() const {
+  make_current();
+  glfwSwapBuffers(handle);
+}
 bool Window::should_close() const { return glfwWindowShouldClose(handle); }
 void Window::focus() const {
   glfwFocusWindow(handle);

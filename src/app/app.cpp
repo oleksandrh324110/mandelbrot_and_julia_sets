@@ -35,10 +35,8 @@ void App::main_loop() {
     mandelbrot.make_current();
     _imgui.render();
 
-    mandelbrot.make_current();
-    glfwSwapBuffers(mandelbrot.handle);
-    julia.make_current();
-    glfwSwapBuffers(julia.handle);
+    mandelbrot.swap_buffers();
+    julia.swap_buffers();
     glfwPollEvents();
   }
 }
