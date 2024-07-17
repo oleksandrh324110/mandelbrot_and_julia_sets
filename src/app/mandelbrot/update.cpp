@@ -16,10 +16,15 @@ void mandelbrot_update_callback(App& app) {
   if (window.mouse.buttons[GLFW_MOUSE_BUTTON_LEFT].down)
     window.central_point -= glm::vec2(window.mouse.delta.x * aspect, window.mouse.delta.y) * 2.f / window.size / zoom;
 
+  float zoom_factor = 1.5f;
+#if __APPLE__
+  zoom_factor = 1.1;
+#endif
+
   if (window.mouse.zoom.y > 0)
-    zoom *= 1.5;
+    zoom *= zoom_factor;
   else if (window.mouse.zoom.y < 0)
-    zoom /= 1.5;
+    zoom /= zoom_factor;
 
   zoom = std::max(0.1f, zoom);
   max_iterations = std::max(1, max_iterations);
