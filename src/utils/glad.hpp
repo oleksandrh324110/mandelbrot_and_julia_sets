@@ -5,6 +5,6 @@
 #include "utils.hpp"
 
 class glad {
- public:
+public:
   glad();
 };

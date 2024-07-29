@@ -1,6 +1,6 @@
 #include "window.hpp"
 
-Window::Window(glm::vec2 size, std::string title, GLFWwindow* share) : size(size), title(title) {
+Window::Window(glm::vec2 size, std::string title, GLFWwindow *share) : size(size), title(title) {
   handle = glfwCreateWindow(size.x, size.y, title.c_str(), nullptr, share);
   if (!handle)
     throw std::runtime_error("Failed to create GLFW window");
@@ -66,7 +66,9 @@ void Window::cleanup() {
   cleanup_callback();
 }
 
-void Window::make_current() const { glfwMakeContextCurrent(handle); }
+void Window::make_current() const {
+  glfwMakeContextCurrent(handle);
+}
 
 void Window::clear() const {
   glClearColor(1, 0, 1, 1);
@@ -76,59 +78,65 @@ void Window::swap_buffers() const {
   make_current();
   glfwSwapBuffers(handle);
 }
-bool Window::should_close() const { return glfwWindowShouldClose(handle); }
+bool Window::should_close() const {
+  return glfwWindowShouldClose(handle);
+}
 void Window::focus() const {
   glfwFocusWindow(handle);
   glfwSetWindowAttrib(handle, GLFW_FOCUSED, true);
 }
-bool Window::is_focused() const { return glfwGetWindowAttrib(handle, GLFW_FOCUSED); }
-void Window::set_should_close(bool value) { glfwSetWindowShouldClose(handle, value); }
+bool Window::is_focused() const {
+  return glfwGetWindowAttrib(handle, GLFW_FOCUSED);
+}
+void Window::set_should_close(bool value) {
+  glfwSetWindowShouldClose(handle, value);
+}
 
 void Window::set_pos(int x, int y) {
   glfwSetWindowPos(handle, x, y);
   this->pos = {x, y};
 }
 
-void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-  Window& self = *(Window*)glfwGetWindowUserPointer(window);
+void Window::framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+  Window &self = *(Window *)glfwGetWindowUserPointer(window);
   self.framebuffer_size = {width, height};
   self.make_current();
   glViewport(0, 0, width, height);
 }
 
-void Window::window_size_callback(GLFWwindow* window, int width, int height) {
-  Window& self = *(Window*)glfwGetWindowUserPointer(window);
+void Window::window_size_callback(GLFWwindow *window, int width, int height) {
+  Window &self = *(Window *)glfwGetWindowUserPointer(window);
   self.size = {width, height};
 }
 
-void Window::pos_callback(GLFWwindow* window, int x, int y) {
-  Window& self = *(Window*)glfwGetWindowUserPointer(window);
+void Window::pos_callback(GLFWwindow *window, int x, int y) {
+  Window &self = *(Window *)glfwGetWindowUserPointer(window);
   self.pos = {x, y};
 }
 
-void Window::cursor_pos_callback(GLFWwindow* window, double x, double y) {
+void Window::cursor_pos_callback(GLFWwindow *window, double x, double y) {
   if (ImGui::IsAnyItemActive())
     return;
-  Window& self = *(Window*)glfwGetWindowUserPointer(window);
+  Window &self = *(Window *)glfwGetWindowUserPointer(window);
   self.mouse.pos = {x, y};
 }
 
-void Window::scroll_callback(GLFWwindow* window, double x, double y) {
-  Window& self = *(Window*)glfwGetWindowUserPointer(window);
+void Window::scroll_callback(GLFWwindow *window, double x, double y) {
+  Window &self = *(Window *)glfwGetWindowUserPointer(window);
   self.mouse.zoom += glm::vec2(x, y);
 }
 
-void Window::mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-  Window& self = *(Window*)glfwGetWindowUserPointer(window);
-  Button& b = self.mouse.buttons[button];
+void Window::mouse_button_callback(GLFWwindow *window, int button, int action, int mods) {
+  Window &self = *(Window *)glfwGetWindowUserPointer(window);
+  Button &b = self.mouse.buttons[button];
   b.down = action != GLFW_RELEASE;
   b.pressed = b.down && !b.last;
   b.last = b.down;
 }
 
-void Window::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-  Window& self = *(Window*)glfwGetWindowUserPointer(window);
-  Button& b = self.keyboard.keys[key];
+void Window::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods) {
+  Window &self = *(Window *)glfwGetWindowUserPointer(window);
+  Button &b = self.keyboard.keys[key];
   b.down = action != GLFW_RELEASE;
   b.pressed = b.down && !b.last;
   b.last = b.down;

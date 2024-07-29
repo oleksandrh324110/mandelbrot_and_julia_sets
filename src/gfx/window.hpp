@@ -24,8 +24,8 @@ struct Mouse {
 };
 
 class Window {
- public:
-  GLFWwindow* handle;
+public:
+  GLFWwindow *handle;
   glm::vec2 size;
   glm::vec2 framebuffer_size;
   glm::ivec2 pos;
@@ -38,13 +38,13 @@ class Window {
   double last_time;
   double delta_time;
 
-  Window(glm::vec2 size, std::string title, GLFWwindow* share = nullptr);
+  Window(glm::vec2 size, std::string title, GLFWwindow *share = nullptr);
   ~Window();
 
-  VAO* vao;
-  VBO* vbo;
-  VBO* ebo;
-  Shader* shader;
+  VAO *vao;
+  VBO *vbo;
+  VBO *ebo;
+  Shader *shader;
 
   glm::vec2 central_point = glm::vec2(0, 0);
 
@@ -69,12 +69,12 @@ class Window {
   void set_should_close(bool value);
   void set_pos(int x, int y);
 
- private:
-  static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-  static void window_size_callback(GLFWwindow* window, int width, int height);
-  static void pos_callback(GLFWwindow* window, int x, int y);
-  static void cursor_pos_callback(GLFWwindow* window, double x, double y);
-  static void scroll_callback(GLFWwindow* window, double x, double y);
-  static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
-  static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+private:
+  static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+  static void window_size_callback(GLFWwindow *window, int width, int height);
+  static void pos_callback(GLFWwindow *window, int x, int y);
+  static void cursor_pos_callback(GLFWwindow *window, double x, double y);
+  static void scroll_callback(GLFWwindow *window, double x, double y);
+  static void mouse_button_callback(GLFWwindow *window, int button, int action, int mods);
+  static void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 };

@@ -1,7 +1,7 @@
 #include "include.hpp"
 
-void mandelbrot_init_callback(App& app) {
-  auto& window = app.mandelbrot;
+void mandelbrot_init_callback(App &app) {
+  auto &window = app.mandelbrot;
 
   float vertices[] = {-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, 1, 0};
   unsigned int indices[] = {0, 1, 2, 2, 3, 0};
@@ -19,5 +19,6 @@ void mandelbrot_init_callback(App& app) {
 
   window.vao->set_attrib(*window.vbo, 0, 3, GL_FLOAT, 3 * sizeof(float), 0);
 
-  window.shader = new Shader("../res/shaders/mandelbrot_set.vs", "../res/shaders/mandelbrot_set.fs");
+  window.shader = new Shader("../res/shaders/mandelbrot_set.vs",
+                             "../res/shaders/mandelbrot_set.fs");
 }

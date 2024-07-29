@@ -3,7 +3,7 @@
 #include "../utils/utils.hpp"
 
 class Shader {
- public:
+public:
   GLuint handle;
 
   Shader();

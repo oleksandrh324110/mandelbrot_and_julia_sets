@@ -30,7 +30,8 @@ Shader::Shader(std::string_view vs_path, std::string_view fs_path) {
     vs_file.close();
     vs_code = vs_stream.str();
   } catch (std::ifstream::failure e) {
-    std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << vs_path << std::endl;
+    std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << vs_path
+              << std::endl;
   }
 
   try {
@@ -40,13 +41,14 @@ Shader::Shader(std::string_view vs_path, std::string_view fs_path) {
     fs_file.close();
     fs_code = fs_stream.str();
   } catch (std::ifstream::failure e) {
-    std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << fs_path << std::endl;
+    std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << fs_path
+              << std::endl;
   }
 
   GLuint vs_id = glCreateShader(GL_VERTEX_SHADER);
   GLuint fs_id = glCreateShader(GL_FRAGMENT_SHADER);
-  const char* vs_char_code = vs_code.c_str();
-  const char* fs_char_code = fs_code.c_str();
+  const char *vs_char_code = vs_code.c_str();
+  const char *fs_char_code = fs_code.c_str();
   glShaderSource(vs_id, 1, &vs_char_code, nullptr);
   glShaderSource(fs_id, 1, &fs_char_code, nullptr);
 

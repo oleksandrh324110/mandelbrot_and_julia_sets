@@ -1,7 +1,7 @@
 #include "include.hpp"
 
-void mandelbrot_update_callback(App& app) {
-  auto& window = app.mandelbrot;
+void mandelbrot_update_callback(App &app) {
+  auto &window = app.mandelbrot;
 
   const float aspect = window.size.x / window.size.y;
 

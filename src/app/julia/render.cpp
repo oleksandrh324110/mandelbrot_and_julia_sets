@@ -1,7 +1,7 @@
 #include "include.hpp"
 
-void julia_render_callback(App& app) {
-  auto& window = app.julia;
+void julia_render_callback(App &app) {
+  auto &window = app.julia;
 
   window.clear();
 

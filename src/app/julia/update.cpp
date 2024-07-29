@@ -1,7 +1,7 @@
 #include "include.hpp"
 
-void julia_update_callback(App& app) {
-  auto& window = app.julia;
+void julia_update_callback(App &app) {
+  auto &window = app.julia;
 
   const float aspect = window.size.x / window.size.y;
 

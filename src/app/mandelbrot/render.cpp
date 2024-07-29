@@ -1,7 +1,7 @@
 #include "include.hpp"
 
-void mandelbrot_render_callback(App& app) {
-  auto& window = app.mandelbrot;
+void mandelbrot_render_callback(App &app) {
+  auto &window = app.mandelbrot;
 
   window.clear();
 

@@ -4,7 +4,7 @@
 #include "../utils/utils.hpp"
 
 class App {
- public:
+public:
   glfw _glfw;
   Window mandelbrot = Window({720, 480}, "Mandelbrot Set");
   Window julia = Window({720, 480}, "Julia Set", mandelbrot.handle);
@@ -18,7 +18,7 @@ class App {
 
   void run();
 
- private:
+private:
   void init();
   void main_loop();
   void cleanup();

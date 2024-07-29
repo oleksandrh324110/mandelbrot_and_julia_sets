@@ -7,8 +7,8 @@
 #include "utils.hpp"
 
 class imgui {
- public:
-  imgui(GLFWwindow* handle);
+public:
+  imgui(GLFWwindow *handle);
   ~imgui();
 
   void new_frame();

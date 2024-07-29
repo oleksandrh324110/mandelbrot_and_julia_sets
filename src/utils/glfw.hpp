@@ -6,7 +6,7 @@
 #include "utils.hpp"
 
 class glfw {
- public:
+public:
   glfw();
   ~glfw();
 };

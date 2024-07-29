@@ -3,8 +3,14 @@
 #include "julia/include.hpp"
 #include "mandelbrot/include.hpp"
 
-App::App() { init(); }
-void App::run() { main_loop(); }
+App::App() {
+  init();
+}
+
+void App::run() {
+  main_loop();
+}
+
 void App::init() {
   mandelbrot.init_callback = [this]() { mandelbrot_init_callback(*this); };
   mandelbrot.update_callback = [this]() { mandelbrot_update_callback(*this); };
@@ -19,6 +25,7 @@ void App::init() {
   mandelbrot.init();
   julia.init();
 }
+
 void App::main_loop() {
   while (!mandelbrot.should_close() && !julia.should_close()) {
     if (mandelbrot.keyboard.keys[GLFW_KEY_Q].down || julia.keyboard.keys[GLFW_KEY_Q].down)
@@ -40,8 +47,12 @@ void App::main_loop() {
     glfwPollEvents();
   }
 }
+
 void App::cleanup() {
   mandelbrot.cleanup();
   julia.cleanup();
 }
-App::~App() { cleanup(); }
+
+App::~App() {
+  cleanup();
+}

@@ -7,8 +7,9 @@ glfw::glfw() {
   setenv("DRI_PRIME", "1", 1);
 #endif
 
-  glfwSetErrorCallback(
-      [](int error, const char* description) { throw std::runtime_error(description); });
+  glfwSetErrorCallback([](int error, const char *description) {
+    throw std::runtime_error(description);
+  });
 
   if (!glfwInit())
     throw std::runtime_error("Failed to initialize GLFW");
@@ -28,4 +29,6 @@ glfw::glfw() {
 #endif
 }
 
-glfw::~glfw() { glfwTerminate(); }
+glfw::~glfw() {
+  glfwTerminate();
+}

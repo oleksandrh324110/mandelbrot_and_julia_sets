@@ -1,3 +1,3 @@
 #include "include.hpp"
 
-void mandelbrot_cleanup_callback(App& app) {}
+void mandelbrot_cleanup_callback(App &app) {}
